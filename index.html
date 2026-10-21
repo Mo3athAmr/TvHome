@@ -6,6 +6,7 @@
 <title>TvHome — واجهة ذكية لشاشتك</title>
 <meta name="description" content="TvHome: واجهة عربية لشاشات أندرويد TV فيها مساعد صوتي، مواقيت الصلاة، المباريات، وأحدث الأفلام والمسلسلات.">
 <meta name="theme-color" content="#07080c">
+<script>try{var q=new URLSearchParams(location.search).get("theme"),t=(q==="light"||q==="dark")?q:localStorage.getItem("tvhome-theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -266,6 +267,41 @@ footer{margin-top:140px;border-top:1px solid var(--line);padding:60px 0 30px;pos
 #lb{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}
 #lb.on{display:flex;animation:up .25s} #lb img{max-height:100%;border-radius:12px}
 .cv{content-visibility:auto;contain-intrinsic-size:auto 900px}
+/* ── light theme ── */
+html[data-theme="light"]{--bg:#f5f6fa;--s1:#ffffff;--s2:#f0f2f7;--s3:#e6e9f1;--line:rgba(16,19,35,.08);--line2:rgba(16,19,35,.15);--text:#121521;--muted:#5b6377;--dim:#8a91a4;--accent:#6a4cf5;--accent-ink:#5a3ee6;color-scheme:light}
+html[data-theme="dark"]{color-scheme:dark}
+html[data-theme="light"] .nav.solid{background:rgba(245,246,250,.94)}
+html[data-theme="light"] .menu{background:rgba(245,246,250,.98)}
+html[data-theme="light"] .btn.light{background:#121521;color:#fff;border-color:#121521;box-shadow:0 8px 26px rgba(106,76,245,.28)}
+html[data-theme="light"] .btn.light:hover{background:#262a3a}
+html[data-theme="light"] .btn.light::after{background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%)}
+html[data-theme="light"] .tabbtn.on{background:#121521;color:#fff;border-color:#121521}
+html[data-theme="light"] .seg button.on{color:#fff}
+html[data-theme="light"] .seg .knob{background:#121521;box-shadow:0 4px 16px rgba(106,76,245,.25)}
+html[data-theme="light"] .ticks li,html[data-theme="light"] .cmd,html[data-theme="light"] ol.steps li,html[data-theme="light"] details.acc .body{color:#3b4256}
+html[data-theme="light"] .callout{color:#2b3145;background:linear-gradient(100deg,rgba(106,76,245,.09),rgba(47,184,255,.07))}
+html[data-theme="light"] .hint{background:rgba(255,184,64,.12);border-color:rgba(214,140,20,.3);color:#7a4d00}
+html[data-theme="light"] .hint.good{background:rgba(31,170,108,.09);border-color:rgba(31,170,108,.3);color:#0f6b45}
+html[data-theme="light"] .need em.req{background:rgba(214,40,110,.1);color:#b3155a}
+html[data-theme="light"] .shot{box-shadow:0 24px 60px -34px rgba(20,24,50,.35)}
+html[data-theme="light"] .shot:hover{box-shadow:0 26px 60px -28px rgba(106,76,245,.3)}
+html[data-theme="light"] .way.on{background:linear-gradient(180deg,rgba(106,76,245,.08),transparent)}
+html[data-theme="light"] .aurora span{opacity:.7}
+html[data-theme="light"] .word{-webkit-text-stroke:1px rgba(16,19,35,.16);background:radial-gradient(280px circle at var(--fx,-999px) var(--fy,-999px),#121521,rgba(106,76,245,.9) 30%,rgba(47,184,255,.5) 50%,transparent 65%);-webkit-background-clip:text;background-clip:text}
+html[data-theme="light"] .code .copy{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#e4e4e7}
+html[data-theme="light"] .code .copy.done{background:var(--ok);color:#04140c}
+/* the TV and its remote are devices: they stay dark in both themes */
+.remote,.bezel{--s2:#1b2030;--s3:#262b3a;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--muted:#9aa2b4;--text:#eef0f5;color:#eef0f5}
+html[data-theme="light"] .remote{box-shadow:0 20px 50px -24px rgba(20,24,50,.45)}
+
+/* theme switch: the new theme grows as a circle from the button */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){z-index:2}
+.theming,.theming *{transition:background-color .6s ease,color .6s ease,border-color .6s ease!important}
+.tbtn{position:relative;overflow:hidden}
+.tbtn svg{position:absolute;inset:0;margin:auto;transition:transform .6s var(--ease),opacity .4s}
+html[data-theme="dark"] .tbtn .moon,html[data-theme="light"] .tbtn .sun{transform:rotate(-90deg) scale(.4);opacity:0}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv,.blur-in span{opacity:1;transform:none;filter:none}.tv{transform:none!important}}
 </style>
 </head>
@@ -278,6 +314,10 @@ footer{margin-top:140px;border-top:1px solid var(--line);padding:60px 0 30px;pos
   </nav>
   <div class="nav-end">
     <a class="btn light" href="#download">حمّلها</a>
+    <button class="ibtn tbtn" id="themeBtn" aria-label="تبديل الوضع النهاري والليلي" title="الوضع النهاري / الليلي">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    </button>
     <a class="ibtn" href="https://github.com/Mo3athAmr/TvHome" target="_blank" rel="noopener" aria-label="المشروع على GitHub" title="GitHub"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
     <button class="ibtn burger" id="burger" aria-label="القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
@@ -571,6 +611,19 @@ addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationF
 $("#burger").addEventListener("click",function(){menu.classList.toggle("open")});
 $$("#menu a").forEach(function(a){a.addEventListener("click",function(){menu.classList.remove("open")})});
 
+/* theme switch */
+var root=document.documentElement,tbtn=$("#themeBtn"),metaTheme=$('meta[name="theme-color"]');
+function applyTheme(t){root.dataset.theme=t;metaTheme.setAttribute("content",t==="light"?"#f5f6fa":"#07080c");try{localStorage.setItem("tvhome-theme",t)}catch(e){}}
+metaTheme.setAttribute("content",root.dataset.theme==="light"?"#f5f6fa":"#07080c");
+tbtn.addEventListener("click",function(){
+  var next=root.dataset.theme==="light"?"dark":"light",r=tbtn.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+  if(reduce){applyTheme(next);return}
+  if(!document.startViewTransition){root.classList.add("theming");applyTheme(next);setTimeout(function(){root.classList.remove("theming")},700);return}
+  var end=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+  document.startViewTransition(function(){applyTheme(next)}).ready.then(function(){
+    root.animate({clipPath:["circle(0px at "+x+"px "+y+"px)","circle("+end+"px at "+x+"px "+y+"px)"]},{duration:1100,easing:"cubic-bezier(.65,0,.35,1)",pseudoElement:"::view-transition-new(root)"})
+  });
+});
 /* hero animations only run while the hero is on screen */
 var heroEl=$(".hero");new IntersectionObserver(function(es){document.body.classList.toggle("paused",!es[0].isIntersecting)}).observe(heroEl);
 /* reveal */
