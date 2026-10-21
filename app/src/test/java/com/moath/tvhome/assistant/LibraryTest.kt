@@ -57,7 +57,7 @@ class LibraryTest {
     }
 
     @Test fun showMatchingIgnoresSpellingVariants() {
-        assertTrue(YoutubeLookup.titleMatches("أنا أقطع | الحلقة 12 مع محمد عدنان", "انا اقطع"))
+        assertTrue(YoutubeLookup.titleMatches("أنا أقطع | الحلقة 12", "انا اقطع"))
         assertFalse(YoutubeLookup.titleMatches("فلوق السفر الجديد", "انا اقطع"))
         assertFalse(YoutubeLookup.titleMatches("anything", ""))
     }

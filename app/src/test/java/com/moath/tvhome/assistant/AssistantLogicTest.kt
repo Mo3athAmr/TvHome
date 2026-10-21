@@ -86,7 +86,7 @@ class AssistantLogicTest {
         assertTrue(Safety.blocked("شغل لي سكس"))
         assertTrue(Safety.blocked("PORN video"))
         assertFalse(Safety.blocked("شغل الجزيرة مباشر"))
-        assertFalse(Safety.blocked("آخر مقطع لمحمد عدنان"))
+        assertFalse(Safety.blocked("آخر مقطع لقناة التقنية"))
     }
 
     @Test fun `speech text drops emoji and markdown, detects arabic`() {

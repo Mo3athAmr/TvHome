@@ -66,8 +66,8 @@ class AssistantTools(private val ctx: Context, private val screen: () -> ScreenI
         ToolSpec("youtube_search", "Search YouTube and show results as cards. Set play=true to start the best match right away.", schema(Triple("query", "string", "What to search"), Triple("play", "boolean", "Play the first result now"), required = listOf("query"))),
         ToolSpec(
             "youtube_channel_latest",
-            "Play the newest video a YouTube channel uploaded, e.g. 'آخر مقطع لمحمد عدنان'. With show, the newest episode of that show/series " +
-                "on the channel ('آخر حلقة أنا أقطع لمحمد عدنان' → channel=محمد عدنان, show=أنا أقطع). Searches the user's subscriptions first.",
+            "Play the newest video a YouTube channel uploaded, e.g. 'آخر مقطع لقناة فلان'. With show, the newest episode of that show/series " +
+                "on the channel ('آخر حلقة من برنامج سوالف لقناة فلان' → channel=فلان, show=سوالف). Searches the user's subscriptions first.",
             schema(Triple("channel", "string", "Channel or creator name"), Triple("show", "string", "Show/series name on that channel, optional"), required = listOf("channel")),
         ),
         ToolSpec("youtube_channel_live", "Open the live stream of a YouTube channel right now, e.g. 'الجزيرة مباشر', 'العربية مباشر', 'قناة القرآن الكريم مباشر'.", schema(Triple("channel", "string", "Channel name"))),
