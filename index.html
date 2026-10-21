@@ -40,7 +40,7 @@ a{color:inherit;text-decoration:none} img{display:block;max-width:100%} button{f
 
 /* header */
 .nav{position:fixed;inset:0 0 auto;z-index:60;transition:background .25s,border-color .25s;border-bottom:1px solid transparent}
-.nav.solid{background:rgba(7,8,12,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-color:var(--line)}
+.nav.solid{background:rgba(7,8,12,.94);border-color:var(--line)}
 .nav .wrap{display:flex;align-items:center;gap:18px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
 .brand i{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;box-shadow:0 4px 18px rgba(124,92,255,.5)}
@@ -60,8 +60,9 @@ a{color:inherit;text-decoration:none} img{display:block;max-width:100%} button{f
 
 /* hero */
 .hero{position:relative;padding:140px 0 0;text-align:center;isolation:isolate}
-.aurora{position:absolute;inset:0 0 auto;height:1000px;z-index:-1;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
-.aurora span{position:absolute;border-radius:50%;will-change:transform}
+.aurora{position:absolute;inset:0 0 auto;height:1000px;z-index:-1;overflow:hidden;pointer-events:none;contain:strict}
+.aurora::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(transparent,var(--bg))}
+.aurora span{position:absolute;border-radius:50%;will-change:transform;transform:translateZ(0)}
 .aurora .a1{width:min(46vw,640px);aspect-ratio:1;top:-30%;right:-23%;background:radial-gradient(closest-side,rgba(124,92,255,.42),transparent);animation:drift1 26s ease-in-out infinite alternate}
 .aurora .a2{width:min(40vw,560px);aspect-ratio:1;top:-20%;left:-20%;background:radial-gradient(closest-side,rgba(47,184,255,.26),transparent);animation:drift2 30s ease-in-out infinite alternate}
 .aurora .a3{width:min(30vw,420px);aspect-ratio:1;top:40%;right:-15%;background:radial-gradient(closest-side,rgba(255,106,168,.14),transparent);animation:drift3 34s ease-in-out infinite alternate}
@@ -88,10 +89,11 @@ a{color:inherit;text-decoration:none} img{display:block;max-width:100%} button{f
 .stage{perspective:1400px;margin:60px auto 0;max-width:1040px}
 .tv{transform-origin:50% 0;transform:rotateX(var(--tilt,22deg)) scale(var(--sc,.9));will-change:transform}
 .bezel{position:relative;padding:11px;border-radius:24px;background:linear-gradient(180deg,#22252e,#0e1015);border:1px solid rgba(255,255,255,.1);box-shadow:0 0 0 1px #000,0 40px 120px rgba(124,92,255,.22),0 30px 80px rgba(0,0,0,.6)}
-@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
-.beam{position:relative}
-.beam::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;background:conic-gradient(from var(--ang),transparent 0 72%,rgba(124,92,255,.95) 82%,rgba(47,184,255,.95) 90%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:beam 6s linear infinite}
-@keyframes beam{to{--ang:360deg}}
+.bezel.beam{overflow:hidden;isolation:isolate}
+.bezel.beam::before{content:"";position:absolute;left:50%;top:50%;width:160%;aspect-ratio:1;margin:-80% 0 0 -80%;background:conic-gradient(transparent 0 70%,rgba(124,92,255,.95) 82%,rgba(47,184,255,.95) 90%,transparent 100%);animation:spin 7s linear infinite;z-index:-2;will-change:transform}
+.bezel.beam::after{content:"";position:absolute;inset:1.5px;border-radius:22.5px;background:linear-gradient(180deg,#22252e,#0e1015);z-index:-1}
+@keyframes spin{to{transform:rotate(360deg)}}
+.paused .aurora span,.paused .bezel.beam::before,.paused .btn.light::after{animation-play-state:paused}
 .screen{position:relative;aspect-ratio:16/9;border-radius:13px;overflow:hidden;background:#000;outline:none}
 .screen img.f{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .38s var(--ease)}
 .screen img.f.on{opacity:1}
@@ -465,7 +467,7 @@ footer{margin-top:140px;border-top:1px solid var(--line);padding:60px 0 30px;pos
   <p class="rv" style="color:var(--dim);font-size:14px;margin:12px 0 0">المجلد ما فيه أي مفاتيح أو حسابات لأحد — كل واحد يحط مفاتيحه هو.</p>
 
   <div class="ways rv" id="ways">
-    <button class="way on spot beam" data-w="ai"><span class="tag">الأسهل</span><h3>بالذكاء الاصطناعي</h3><p>تعطيه البرومبت، يسألك وش تبي، ويركّب كل شي.</p></button>
+    <button class="way on spot" data-w="ai"><span class="tag">الأسهل</span><h3>بالذكاء الاصطناعي</h3><p>تعطيه البرومبت، يسألك وش تبي، ويركّب كل شي.</p></button>
     <button class="way spot" data-w="manual"><h3>يدوي بالتفصيل</h3><p>خطوة بخطوة بالأوامر، لو تحب تعرف وش يصير.</p></button>
   </div>
   <div id="wayPanels" class="rv">
@@ -564,6 +566,8 @@ addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationF
 $("#burger").addEventListener("click",function(){menu.classList.toggle("open")});
 $$("#menu a").forEach(function(a){a.addEventListener("click",function(){menu.classList.remove("open")})});
 
+/* hero animations only run while the hero is on screen */
+var heroEl=$(".hero");new IntersectionObserver(function(es){document.body.classList.toggle("paused",!es[0].isIntersecting)}).observe(heroEl);
 /* reveal */
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
 $$(".rv").forEach(function(el){io.observe(el)});
@@ -590,7 +594,6 @@ function tabs(btns,attr,scope){$$(btns).forEach(function(b){b.addEventListener("
   $$(btns).forEach(function(x){x.classList.toggle("on",x===b)});
   $$(".panel",$(scope)).forEach(function(p){p.classList.toggle("on",p.getAttribute(attr)===b.getAttribute(attr))})})})}
 tabs("#tvTabs .tabbtn","data-p","#tvPanels");tabs("#ways .way","data-w","#wayPanels");
-$$("#ways .way").forEach(function(w){w.addEventListener("click",function(){$$("#ways .way").forEach(function(x){x.classList.toggle("beam",x===w)})})});
 document.addEventListener("pointermove",function(e){var c=e.target.closest&&e.target.closest(".spot");if(!c)return;var r=c.getBoundingClientRect();c.style.setProperty("--mx",e.clientX-r.left+"px");c.style.setProperty("--my",e.clientY-r.top+"px")},{passive:true});
 (function(){var h=$("#h1");if(!h)return;var i=0;function wrap(n){Array.prototype.slice.call(n.childNodes).forEach(function(c){
   if(c.nodeType===3){var f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(function(w){if(!w)return;if(/^\s+$/.test(w)){f.appendChild(document.createTextNode(w));return}var sp=document.createElement("span");sp.textContent=w;sp.style.animationDelay=(i++*110)+"ms";f.appendChild(sp)});n.replaceChild(f,c)}
