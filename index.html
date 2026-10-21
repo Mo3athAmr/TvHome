@@ -61,16 +61,16 @@ a{color:inherit;text-decoration:none} img{display:block;max-width:100%} button{f
 /* hero */
 .hero{position:relative;padding:140px 0 0;text-align:center;isolation:isolate}
 .aurora{position:absolute;inset:0 0 auto;height:1000px;z-index:-1;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
-.aurora span{position:absolute;border-radius:50%;opacity:.55;will-change:transform}
-.aurora .a1{width:min(58vw,820px);aspect-ratio:1.3;top:-22%;right:-18%;background:radial-gradient(closest-side,rgba(124,92,255,.72),transparent);animation:drift1 18s ease-in-out infinite alternate}
-.aurora .a2{width:min(52vw,740px);aspect-ratio:1.3;top:-14%;left:-20%;background:radial-gradient(closest-side,rgba(47,184,255,.5),transparent);animation:drift2 21s ease-in-out infinite alternate}
-.aurora .a3{width:min(40vw,560px);aspect-ratio:1.2;top:34%;right:-16%;background:radial-gradient(closest-side,rgba(255,106,168,.32),transparent);animation:drift3 24s ease-in-out infinite alternate}
-.aurora .a4{width:min(36vw,500px);aspect-ratio:1.2;top:44%;left:-14%;background:radial-gradient(closest-side,rgba(124,92,255,.38),transparent);animation:drift4 20s ease-in-out infinite alternate}
-@keyframes drift1{to{transform:translate(-6%,8%) scale(1.08)}}
-@keyframes drift2{to{transform:translate(6%,10%) scale(1.1)}}
-@keyframes drift3{to{transform:translate(-5%,-8%) scale(1.12)}}
-@keyframes drift4{to{transform:translate(5%,-6%) scale(1.1)}}
-@media (max-width:700px){.aurora .a1{width:80vw;right:-30%;top:-8%}.aurora .a2{width:76vw;left:-32%;top:-4%}.aurora .a3{width:60vw;right:-28%;top:30%}.aurora .a4{width:56vw;left:-26%;top:38%}}
+.aurora span{position:absolute;border-radius:50%;will-change:transform}
+.aurora .a1{width:min(46vw,640px);aspect-ratio:1;top:-30%;right:-23%;background:radial-gradient(closest-side,rgba(124,92,255,.42),transparent);animation:drift1 26s ease-in-out infinite alternate}
+.aurora .a2{width:min(40vw,560px);aspect-ratio:1;top:-20%;left:-20%;background:radial-gradient(closest-side,rgba(47,184,255,.26),transparent);animation:drift2 30s ease-in-out infinite alternate}
+.aurora .a3{width:min(30vw,420px);aspect-ratio:1;top:40%;right:-15%;background:radial-gradient(closest-side,rgba(255,106,168,.14),transparent);animation:drift3 34s ease-in-out infinite alternate}
+.aurora .a4{width:min(28vw,400px);aspect-ratio:1;top:48%;left:-14%;background:radial-gradient(closest-side,rgba(124,92,255,.16),transparent);animation:drift4 32s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(-3%,4%) scale(1.04)}}
+@keyframes drift2{to{transform:translate(3%,5%) scale(1.05)}}
+@keyframes drift3{to{transform:translate(-3%,-4%) scale(1.06)}}
+@keyframes drift4{to{transform:translate(3%,-3%) scale(1.05)}}
+@media (max-width:700px){.aurora .a1{width:72vw;right:-36%;top:-14%}.aurora .a2{width:64vw;left:-34%;top:-10%}.aurora .a3{width:48vw;right:-26%;top:34%}.aurora .a4{width:44vw;left:-24%;top:42%}}
 .blur-in span{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(12px);animation:blurin .9s var(--ease) forwards}
 @keyframes blurin{to{opacity:1;filter:none;transform:none}}
 .stats{display:flex;justify-content:center;gap:clamp(22px,6vw,64px);margin:40px auto 0;flex-wrap:wrap}
