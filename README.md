@@ -1,6 +1,6 @@
 # TvHome — a smart Arabic home screen for Android TV
 
-> 🇸🇦 النسخة العربية: [README.ar.md](README.ar.md) · 📖 Illustrated guide: [docs/guide.html](docs/guide.html) · 🤖 Install with an AI agent: [install.md](install.md)
+> 🌐 Website: **https://mo3athamr.github.io/TvHome/** · 🇸🇦 النسخة العربية: [README.ar.md](README.ar.md) · 📖 Illustrated guide: [docs/index.html](docs/index.html) · 🤖 Install with an AI agent: [install.md](install.md)
 
 **TvHome** replaces the launcher of an Android TV / Google TV set with a complete Arabic (right-to-left)
 home system: a clean tvOS-style home screen with fresh content, **Rafiq** (an AI voice assistant that
@@ -8,11 +8,13 @@ can actually operate the TV), prayer times with adhan and a prayer lock, Friday 
 Surah Al-Kahf, live football with reminders, a prayer-times screensaver, and system-wide tools.
 Native Kotlin + Jetpack Compose, tuned for low-memory TVs (1.8 GB).
 
-![Home](docs/screenshots/home.jpg)
+![Home](docs/screenshots/home-yt.jpg)
 
 | | |
 |---|---|
-| ![Latest rows](docs/screenshots/home-latest.jpg) | ![Rafiq answering](docs/screenshots/rafiq-answer.jpg) |
+| ![Trending mode](docs/screenshots/home-trend.jpg) | ![Latest rows](docs/screenshots/home-latest.jpg) |
+| ![Rafiq: next Barcelona match](docs/screenshots/rafiq-barca.jpg) | ![Rafiq opens the latest video](docs/screenshots/rafiq-adnan.jpg) |
+| ![Match page](docs/screenshots/match.jpg) | ![Search](docs/screenshots/tab-search.jpg) |
 | ![Family picks](docs/screenshots/picks-family.jpg) | ![Korean horror picks](docs/screenshots/picks-korean.jpg) |
 | ![Prayer screensaver](docs/screenshots/prayer-dashboard.jpg) | ![Prayer lock](docs/screenshots/prayer-lock.jpg) |
 | ![Settings](docs/screenshots/settings-customize.jpg) | ![Assistant settings](docs/screenshots/settings-assistant.jpg) |
@@ -39,7 +41,7 @@ Native Kotlin + Jetpack Compose, tuned for low-memory TVs (1.8 GB).
 
 | Item | Note |
 |---|---|
-| TV | Android TV / Google TV, Android 8.0+ (minSdk 26). Developed on a TCL Google TV (Android 12, 1.8 GB). |
+| TV | Android TV / Google TV, Android 8.0+ (minSdk 26). Developed on a TCL Google TV (Android 12, 1.8 GB). Samsung (Tizen) and LG (webOS) can't run Android apps — their developer modes only install Tizen/webOS apps — so plug in a small Google TV device over HDMI. |
 | Computer | macOS, Linux or Windows with **JDK 21**, **Android SDK** (platform 36 + build-tools) and **adb** |
 | TMDB | Free *API Read Access Token* — <https://www.themoviedb.org/settings/api> (required) |
 | AI key(s) | At least one: Anthropic, Experiential Labs or Google Gemini (only for Rafiq) |

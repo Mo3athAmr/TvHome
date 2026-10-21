@@ -2,18 +2,20 @@
 
 # TvHome — واجهة ذكية عربية لشاشات Android TV
 
-> 🇬🇧 English: [README.md](README.md) · 📖 الدليل المصوّر: [docs/guide.html](docs/guide.html) · 🤖 التثبيت بوكيل ذكاء اصطناعي: [install.md](install.md)
+> 🌐 الموقع: **https://mo3athamr.github.io/TvHome/** · 🇬🇧 English: [README.md](README.md) · 📖 الدليل المصوّر: [docs/index.html](docs/index.html) · 🤖 التثبيت بوكيل ذكاء اصطناعي: [install.md](install.md)
 
 **TvHome** يستبدل الواجهة الرئيسية لشاشة Android TV / Google TV بنظام عربي متكامل من اليمين لليسار:
 شاشة رئيسية أنيقة بمحتوى يتجدد، و**رفيق** (مساعد صوتي ذكي يتحكم بالشاشة فعلاً)، ومواقيت الصلاة مع الأذان
 وقفل الشاشة وقت الصلاة، ووضع الجمعة مع سورة الكهف، ومباريات مباشرة مع تذكير، وشاشة توقف بمواقيت الصلاة،
 وأدوات على مستوى النظام. مكتوب بـ Kotlin و Jetpack Compose ومضبوط للشاشات قليلة الذاكرة (1.8 جيجا).
 
-![الشاشة الرئيسية](docs/screenshots/home.jpg)
+![الشاشة الرئيسية](docs/screenshots/home-yt.jpg)
 
 | | |
 |---|---|
-| ![أحدث الأفلام والمسلسلات](docs/screenshots/home-latest.jpg) | ![رفيق يرد](docs/screenshots/rafiq-answer.jpg) |
+| ![وضع الأكثر رواجاً](docs/screenshots/home-trend.jpg) | ![أحدث الأفلام والمسلسلات](docs/screenshots/home-latest.jpg) |
+| ![رفيق: مباراة برشلونة الجاية](docs/screenshots/rafiq-barca.jpg) | ![رفيق يفتح آخر مقطع](docs/screenshots/rafiq-adnan.jpg) |
+| ![صفحة المباراة](docs/screenshots/match.jpg) | ![البحث](docs/screenshots/tab-search.jpg) |
 | ![اقتراحات عائلية](docs/screenshots/picks-family.jpg) | ![مسلسلات رعب كورية](docs/screenshots/picks-korean.jpg) |
 | ![شاشة التوقف](docs/screenshots/prayer-dashboard.jpg) | ![قفل الصلاة](docs/screenshots/prayer-lock.jpg) |
 | ![الإعدادات](docs/screenshots/settings-customize.jpg) | ![إعدادات المساعد](docs/screenshots/settings-assistant.jpg) |
@@ -40,7 +42,7 @@
 
 | العنصر | ملاحظة |
 |---|---|
-| الشاشة | Android TV / Google TV بإصدار 8.0 أو أحدث. طُوّر على TCL Google TV (Android 12، ذاكرة 1.8 جيجا). |
+| الشاشة | Android TV / Google TV بإصدار 8.0 أو أحدث. طُوّر على TCL Google TV (Android 12، ذاكرة 1.8 جيجا). سامسونج (Tizen) و LG (webOS) ما تشغّل تطبيقات أندرويد — وضع المطوّر فيها لتطبيقاتها فقط — فركّب جهاز Google TV صغير على HDMI. |
 | الكمبيوتر | ماك أو لينكس أو ويندوز مع **JDK 21** و **Android SDK** (المنصة 36 وأدوات البناء) و **adb** |
 | TMDB | رمز «API Read Access Token» مجاني من <https://www.themoviedb.org/settings/api> (مطلوب) |
 | مفاتيح الذكاء الاصطناعي | واحد على الأقل: Anthropic أو Experiential Labs أو Google Gemini (لرفيق فقط) |
