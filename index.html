@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TvHome — واجهة ذكية لشاشتك</title>
+<meta name="description" content="TvHome: واجهة عربية لشاشات أندرويد TV فيها مساعد صوتي، مواقيت الصلاة، المباريات، وأحدث الأفلام والمسلسلات.">
+<meta name="theme-color" content="#0a0a0b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="screenshots/home-yt.jpg">
+<style>
+:root{
+  --bg:#0a0a0b; --s1:#111113; --s2:#17171a; --s3:#1f1f23; --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.13);
+  --text:#f4f4f5; --muted:#a1a1aa; --dim:#6e6e78; --accent:#8b8bff; --accent-ink:#c7c7ff; --ok:#3fcf8e;
+  --r:18px; --ease:cubic-bezier(.22,.8,.24,1); --w:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 "IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
+a{color:inherit;text-decoration:none} img{display:block;max-width:100%} button{font:inherit;color:inherit}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 20px}
+::selection{background:rgba(139,139,255,.35)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:10px}
+
+.btn{display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 20px;border-radius:12px;font-weight:600;font-size:15px;border:1px solid var(--line2);background:var(--s2);cursor:pointer;transition:background .2s,border-color .2s,transform .2s var(--ease);white-space:nowrap}
+.btn:hover{background:var(--s3);border-color:rgba(255,255,255,.22)}
+.btn:active{transform:scale(.98)}
+.btn.light{background:#f4f4f5;color:#0a0a0b;border-color:#f4f4f5}
+.btn.light:hover{background:#fff}
+.btn svg{width:18px;height:18px;flex:none}
+.label{display:flex;align-items:center;gap:10px;color:var(--dim);font-size:13.5px;font-weight:500;letter-spacing:.2px;margin-bottom:14px}
+.label b{color:var(--accent-ink);font-weight:600;font-feature-settings:"tnum"}
+.label::after{content:"";height:1px;width:40px;background:var(--line2)}
+
+/* header */
+.nav{position:fixed;inset:0 0 auto;z-index:60;transition:background .25s,border-color .25s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(10,10,11,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.brand i{width:28px;height:28px;border-radius:8px;background:#f4f4f5;display:grid;place-items:center}
+.brand i svg{width:16px;height:16px}
+.menu{display:flex;gap:2px;margin-inline-start:14px}
+.menu a{padding:7px 12px;border-radius:9px;color:var(--muted);font-size:14.5px;transition:color .2s,background .2s}
+.menu a:hover{color:var(--text)} .menu a.on{color:var(--text);background:var(--s2)}
+.nav-end{margin-inline-start:auto;display:flex;gap:8px;align-items:center}
+.ibtn{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line2);background:var(--s1);cursor:pointer;transition:background .2s}
+.ibtn:hover{background:var(--s3)} .ibtn svg{width:19px;height:19px}
+.burger{display:none}
+@media (max-width:880px){
+  .menu{position:fixed;inset:64px 0 auto;flex-direction:column;background:rgba(10,10,11,.97);padding:10px 16px 16px;margin:0;border-bottom:1px solid var(--line);opacity:0;transform:translateY(-6px);pointer-events:none;transition:.22s var(--ease)}
+  .menu.open{opacity:1;transform:none;pointer-events:auto} .menu a{padding:12px;font-size:16px}
+  .burger{display:grid} .nav-end .btn{display:none}
+}
+
+/* hero */
+.hero{position:relative;padding:128px 0 0;text-align:center}
+.hero::before{content:"";position:absolute;inset:0 0 auto;height:900px;z-index:-1;pointer-events:none;background:radial-gradient(50% 42% at 50% 62%,rgba(139,139,255,.16),transparent 72%)}
+.kicker{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--ok);font-style:normal}
+.hero h1{font-size:clamp(36px,6vw,68px);line-height:1.12;letter-spacing:-1px;margin:18px auto 16px;max-width:820px;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--accent-ink)}
+.hero .sub{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:640px;margin:0 auto 28px}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* simulator */
+.stage{perspective:1400px;margin:60px auto 0;max-width:1040px}
+.tv{transform-origin:50% 100%;transform:rotateX(var(--tilt,14deg)) translateY(var(--ty,30px)) scale(var(--sc,.94));will-change:transform}
+.bezel{padding:10px;border-radius:22px;background:#17171a;border:1px solid var(--line2);box-shadow:0 50px 120px -30px rgba(0,0,0,.9),0 0 0 1px #000}
+.screen{position:relative;aspect-ratio:16/9;border-radius:13px;overflow:hidden;background:#000;outline:none}
+.screen img.f{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .38s var(--ease)}
+.screen img.f.on{opacity:1}
+.stand{width:22%;height:12px;margin:0 auto;background:#121214;border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px}
+.hot{position:absolute;border-radius:9px;cursor:pointer;transition:box-shadow .2s,background .2s}
+.hot:hover{box-shadow:inset 0 0 0 2px rgba(255,255,255,.8);background:rgba(255,255,255,.05)}
+.plate{position:absolute;inset:0 0 auto;padding:3.4% 5% 2.6%;background:#0c0c10;border-radius:0 0 3.2% 3.2%/0 0 14% 14%;transform:translateY(-105%);transition:transform .42s var(--ease);text-align:start}
+.plate.on{transform:none}
+.plate .dots{display:flex;gap:5px;margin-bottom:.4em}
+.plate .dots i{width:.5em;height:.5em;border-radius:50%;font-size:clamp(8px,1.4vw,16px)}
+.plate .dots i:nth-child(1){background:#4285f4}.plate .dots i:nth-child(2){background:#ea4335}.plate .dots i:nth-child(3){background:#fbbc05}.plate .dots i:nth-child(4){background:#34a853}
+.plate.listen .dots i{animation:hop .9s ease-in-out infinite}.plate.listen .dots i:nth-child(2){animation-delay:.12s}.plate.listen .dots i:nth-child(3){animation-delay:.24s}.plate.listen .dots i:nth-child(4){animation-delay:.36s}
+@keyframes hop{50%{transform:translateY(-40%)}}
+.plate .q{font-size:clamp(13px,2.2vw,26px);font-weight:600;min-height:1.5em;line-height:1.5}
+.plate .a{font-size:clamp(11px,1.7vw,19px);color:#d4d4d8;min-height:1.4em;line-height:1.6}
+.veil{position:absolute;inset:0;background:rgba(8,8,10,.9);opacity:0;transition:opacity .3s;pointer-events:none}
+.veil.on{opacity:1}
+.toast{position:absolute;bottom:5%;left:50%;transform:translate(-50%,12px);opacity:0;background:rgba(17,17,19,.94);border:1px solid var(--line2);padding:7px 15px;border-radius:10px;font-size:clamp(11px,1.5vw,14.5px);transition:.25s var(--ease);white-space:nowrap;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.where{position:absolute;top:3%;inset-inline-start:3%;background:rgba(0,0,0,.55);border:1px solid var(--line2);border-radius:8px;padding:2px 9px;font-size:clamp(9px,1.2vw,12px);color:#e4e4e7;pointer-events:none;opacity:.9}
+.console{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:start;margin-top:22px;text-align:start}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.tabbtn{height:36px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--s1);color:var(--muted);font-size:14px;cursor:pointer;transition:.18s}
+.tabbtn:hover{color:var(--text);border-color:var(--line2)}
+.tabbtn.on{background:#f4f4f5;color:#0a0a0b;border-color:#f4f4f5}
+.cmds{margin-top:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.cmd{display:flex;align-items:center;gap:8px;text-align:start;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:transparent;color:#d4d4d8;font-size:14px;cursor:pointer;transition:.18s}
+.cmd:hover{background:var(--s1);border-color:var(--line2)}
+.cmd svg{width:15px;height:15px;flex:none;color:var(--accent)}
+.mini{display:flex;align-items:center;gap:10px;margin-top:14px;color:var(--dim);font-size:13.5px;flex-wrap:wrap}
+.switch{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.switch button{border:0;background:transparent;color:var(--muted);padding:5px 12px;font-size:13px;cursor:pointer}
+.switch button.on{background:var(--s3);color:var(--text)}
+.remote{width:186px;padding:16px;border-radius:26px;background:var(--s1);border:1px solid var(--line);display:grid;gap:14px;justify-items:center}
+.dpad{position:relative;width:132px;height:132px;border-radius:50%;background:var(--s2);border:1px solid var(--line2)}
+.dpad button{position:absolute;width:42px;height:42px;border:0;background:transparent;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--muted);transition:.12s}
+.dpad button:hover{color:#fff} .dpad button:active{transform:scale(.9)}
+.dpad .u{top:2px;left:45px}.dpad .d{bottom:2px;left:45px}.dpad .l{left:2px;top:45px}.dpad .r{right:2px;top:45px}
+.dpad .ok{inset:34px;width:auto;height:auto;background:var(--s3);color:#fff;font-size:13px;font-weight:600}
+.keys{display:grid;grid-template-columns:repeat(3,44px);gap:9px}
+.key{width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:var(--s2);display:grid;place-items:center;cursor:pointer;color:var(--muted);transition:.12s}
+.key:hover{color:#fff} .key:active{transform:scale(.92)}
+.key.mic{background:#f4f4f5;color:#0a0a0b;border-color:#f4f4f5}
+.dpad svg,.key svg{width:18px;height:18px}
+.rcap{font-size:12px;color:var(--dim)}
+@media (max-width:820px){.console{grid-template-columns:1fr}.remote{width:100%;grid-template-columns:auto auto;justify-content:center;align-items:center;gap:24px}.cmds{grid-template-columns:1fr}}
+
+/* sections */
+section{padding:120px 0 0}
+.sec-head{max-width:700px;margin-bottom:40px}
+.sec-head h2{font-size:clamp(28px,4vw,44px);line-height:1.2;letter-spacing:-.5px;margin:0 0 12px;font-weight:700}
+.sec-head p{color:var(--muted);font-size:17px;margin:0}
+.center{text-align:center;margin-inline:auto}
+.center .label{justify-content:center}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* split feature */
+.split{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:center}
+.split.flip .shot{order:-1}
+.split h3{font-size:clamp(22px,2.8vw,30px);margin:0 0 10px;line-height:1.3}
+.split p{color:var(--muted);margin:0 0 16px}
+.ticks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ticks li{position:relative;padding-inline-start:28px;color:#d4d4d8;font-size:15.5px}
+.ticks li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:16px;height:16px;border-radius:5px;background:rgba(139,139,255,.15);box-shadow:inset 0 0 0 1px rgba(139,139,255,.35)}
+.ticks li::after{content:"";position:absolute;inset-inline-start:5px;top:calc(.55em + 4px);width:6px;height:4px;border-left:2px solid var(--accent-ink);border-bottom:2px solid var(--accent-ink);transform:rotate(-45deg)}
+.shot{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--s1);box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
+.shot img{width:100%;aspect-ratio:16/9;object-fit:cover;cursor:zoom-in;transition:transform .6s var(--ease)}
+.shot:hover img{transform:scale(1.015)}
+.shot figcaption{padding:11px 16px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+figure{margin:0}
+.stack{display:grid;gap:56px}
+@media (max-width:880px){.split{grid-template-columns:1fr;gap:22px}.split.flip .shot{order:0}}
+
+/* modes */
+.seg{position:relative;display:inline-flex;padding:4px;border-radius:12px;background:var(--s1);border:1px solid var(--line);margin-bottom:22px}
+.seg button{position:relative;z-index:1;border:0;background:transparent;height:38px;padding:0 18px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:600;font-size:14.5px;transition:color .25s}
+.seg button.on{color:#0a0a0b}
+.seg .knob{position:absolute;top:4px;bottom:4px;border-radius:9px;background:#f4f4f5;transition:right .35s var(--ease),width .35s var(--ease)}
+.strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:#2a2a2e transparent;overscroll-behavior-x:contain}
+.strip figure{flex:0 0 min(84%,760px);scroll-snap-align:start;transition:opacity .3s,transform .3s var(--ease)}
+.strip.swap figure{opacity:0;transform:translateY(8px)}
+.strip-nav{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+
+/* commands list */
+.saylist{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:28px}
+.saylist div{padding:14px 16px;border-radius:14px;background:var(--s1);border:1px solid var(--line)}
+.saylist q{display:block;font-weight:600;quotes:"«" "»"}
+.saylist span{color:var(--muted);font-size:14px}
+.callout{margin-top:16px;padding:14px 18px;border-radius:14px;border:1px solid var(--line2);background:var(--s1);color:#d4d4d8;font-size:15px}
+
+/* prompts / code */
+.code{border-radius:14px;background:#070708;border:1px solid var(--line);overflow:hidden}
+.code .bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px 8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--dim)}
+.code pre{margin:0;padding:15px 17px;overflow-x:auto;font:13.5px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e4e4e7;direction:ltr;text-align:left;white-space:pre}
+.code pre.ar{direction:rtl;text-align:right;white-space:pre-wrap;font:15px/1.9 "IBM Plex Sans Arabic",sans-serif}
+.copy{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:8px;border:1px solid var(--line2);background:var(--s2);font-size:13px;cursor:pointer;transition:.18s;flex:none}
+.copy:hover{background:var(--s3)} .copy.done{background:var(--ok);border-color:var(--ok);color:#04140c}
+.copy svg{width:14px;height:14px}
+.prompts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.prompts{grid-template-columns:1fr}}
+
+/* tabs / panels */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.panel{display:none}.panel.on{display:block;animation:up .45s var(--ease)}
+@keyframes up{from{opacity:0;transform:translateY(8px)}}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.card h3{margin:0 0 6px;font-size:20px}
+.card > p{color:var(--muted);margin:0 0 18px}
+ol.steps{list-style:none;counter-reset:n;margin:0;padding:0;display:grid;gap:14px}
+ol.steps li{counter-increment:n;position:relative;padding-inline-start:44px;color:#d4d4d8}
+ol.steps li::before{content:counter(n);position:absolute;inset-inline-start:0;top:1px;width:28px;height:28px;border-radius:8px;background:var(--s3);color:var(--text);display:grid;place-items:center;font-weight:600;font-size:13.5px}
+ol.steps b{color:var(--text)}
+.hint{margin-top:16px;padding:12px 16px;border-radius:12px;background:rgba(255,196,87,.07);border:1px solid rgba(255,196,87,.22);color:#f0d9a8;font-size:14.5px}
+.hint.good{background:rgba(63,207,142,.07);border-color:rgba(63,207,142,.25);color:#bdeed6}
+
+/* download */
+.need{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.need div{padding:15px 16px;border-radius:14px;background:var(--s1);border:1px solid var(--line);font-size:14.5px;color:var(--muted)}
+.need b{display:flex;gap:8px;align-items:center;color:var(--text);font-size:15.5px;margin-bottom:3px}
+.need em{font-style:normal;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:6px;background:var(--s3);color:var(--muted)}
+.need em.req{background:rgba(139,139,255,.16);color:var(--accent-ink)}
+@media (max-width:900px){.need{grid-template-columns:1fr 1fr}} @media (max-width:560px){.need{grid-template-columns:1fr}}
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 14px}
+.way{position:relative;text-align:start;padding:20px 22px;border-radius:var(--r);border:1px solid var(--line);background:var(--s1);cursor:pointer;transition:.22s var(--ease)}
+.way:hover{border-color:var(--line2)}
+.way.on{border-color:rgba(139,139,255,.6);background:linear-gradient(180deg,rgba(139,139,255,.07),transparent)}
+.way h3{margin:0 0 4px;font-size:18px} .way p{margin:0;color:var(--muted);font-size:14.5px}
+.way .tag{position:absolute;top:16px;inset-inline-end:16px;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--ok);color:#04140c}
+@media (max-width:700px){.ways{grid-template-columns:1fr}}
+details.acc{border:1px solid var(--line);border-radius:14px;background:var(--s1);margin-bottom:8px;overflow:hidden}
+details.acc summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:600;display:flex;align-items:center;gap:12px}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary .n{width:28px;height:28px;flex:none;border-radius:8px;background:var(--s3);display:grid;place-items:center;font-size:13.5px}
+details.acc summary::after{content:"";margin-inline-start:auto;width:9px;height:9px;border-left:2px solid var(--dim);border-bottom:2px solid var(--dim);transform:rotate(-45deg);transition:transform .25s}
+details.acc[open] summary::after{transform:rotate(135deg)}
+details.acc .body{padding:0 18px 18px;color:#d4d4d8}
+details.acc .body p{margin:0 0 10px}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;background:var(--s3);padding:1px 6px;border-radius:6px;direction:ltr;unicode-bidi:embed}
+
+/* footer */
+footer{margin-top:140px;border-top:1px solid var(--line);padding:60px 0 30px;position:relative;overflow:hidden}
+.word{font-size:clamp(64px,16vw,210px);font-weight:700;line-height:.9;letter-spacing:-3px;text-align:center;direction:ltr;user-select:none;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1);background:radial-gradient(260px circle at var(--fx,-999px) var(--fy,-999px),rgba(255,255,255,.95),rgba(139,139,255,.7) 35%,transparent 65%);-webkit-background-clip:text;background-clip:text}
+.fl{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:36px;color:var(--muted);font-size:14px}
+.fl nav{display:flex;gap:20px;flex-wrap:wrap} .fl a:hover{color:var(--text)}
+.made{margin-top:28px;text-align:center;font-size:12px;color:var(--dim)}
+
+#lb{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}
+#lb.on{display:flex;animation:up .25s} #lb img{max-height:100%;border-radius:12px}
+.cv{content-visibility:auto;contain-intrinsic-size:auto 900px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.tv{transform:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav"><div class="wrap">
+  <a class="brand" href="#top"><i><svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/></svg></i>TvHome</a>
+  <nav class="menu" id="menu">
+    <a href="#try">جرّبها</a><a href="#home">الرئيسية</a><a href="#rafiq">رفيق</a><a href="#custom">التخصيص</a><a href="#tvs">نوع شاشتك</a><a href="#download">التحميل</a><a href="#faq">أسئلة</a>
+  </nav>
+  <div class="nav-end">
+    <a class="btn light" href="#download">حمّلها</a>
+    <a class="ibtn" href="https://github.com/Mo3athAmr/TvHome" target="_blank" rel="noopener" aria-label="المشروع على GitHub" title="GitHub"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+    <button class="ibtn burger" id="burger" aria-label="القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</div></header>
+
+<main id="top">
+<div class="hero"><div class="wrap">
+  <span class="kicker rv"><i></i>مجاني · بالعربي · لشاشات أندرويد TV</span>
+  <h1 class="rv">شاشتك تصير <em>أذكى</em><br>وأقرب لبيتك</h1>
+  <p class="sub rv">واجهة جديدة لشاشتك: تكلّمها بصوتك وتفهمك، تذكّرك بالصلاة، تتابع لك مبارياتك، وتعرض لك أحدث الأفلام والحلقات أول ما تفتحها.</p>
+  <div class="cta rv">
+    <a class="btn light" href="https://github.com/Mo3athAmr/TvHome/archive/refs/heads/main.zip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>حمّل المجلد</a>
+    <a class="btn" href="https://github.com/Mo3athAmr/TvHome" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+  </div>
+
+  <div class="stage" id="try">
+    <div class="tv" id="tv">
+      <div class="bezel"><div class="screen" id="screen" tabindex="0" aria-label="تجربة الشاشة: استخدم الأسهم وزر Enter">
+        <div class="veil" id="veil"></div>
+        <div class="plate" id="plate"><div class="dots"><i></i><i></i><i></i><i></i></div><div class="q" id="pq"></div><div class="a" id="pa"></div></div>
+        <div class="where" id="where"></div>
+        <div class="toast" id="toast"></div>
+      </div></div>
+      <div class="stand"></div>
+    </div>
+    <div class="console">
+      <div>
+        <div class="row" id="pills">
+          <button class="tabbtn" data-tab="search">البحث</button>
+          <button class="tabbtn on" data-tab="home">الرئيسية</button>
+          <button class="tabbtn" data-tab="movies">أفلام</button>
+          <button class="tabbtn" data-tab="series">مسلسلات</button>
+          <button class="tabbtn" data-tab="apps">التطبيقات</button>
+          <button class="tabbtn" data-tab="settings">الإعدادات</button>
+        </div>
+        <div class="cmds" id="cmds">
+          <button class="cmd" data-say="barca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>«متى مباراة برشلونة الجاية؟»</button>
+          <button class="cmd" data-say="family"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>«اقترح لي فيلم عائلي»</button>
+          <button class="cmd" data-say="korean"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>«مسلسل رعب كوري جديد»</button>
+          <button class="cmd" data-say="adnan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>«افتح لي آخر مقطع لمحمد عدنان»</button>
+        </div>
+        <div class="mini">
+          <span>القسم الكبير:</span>
+          <span class="switch" id="heroSw"><button class="on" data-h="yt">جديد يوتيوب</button><button data-h="trend">الأكثر رواجاً</button></span>
+          <button class="tabbtn" data-go="saver" style="height:30px">شاشة التوقف</button>
+          <button class="tabbtn" data-go="lock" style="height:30px">وقت الصلاة</button>
+        </div>
+      </div>
+      <div class="remote" aria-label="الريموت">
+        <div class="dpad">
+          <button class="u" data-k="up" aria-label="فوق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 15l6-6 6 6"/></svg></button>
+          <button class="r" data-k="right" aria-label="يمين"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+          <button class="ok" data-k="ok">OK</button>
+          <button class="l" data-k="left" aria-label="يسار"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button class="d" data-k="down" aria-label="تحت"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></button>
+        </div>
+        <div>
+          <div class="keys">
+            <button class="key" data-k="back" aria-label="رجوع" title="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 010 10h-3"/></svg></button>
+            <button class="key" data-k="home" aria-label="البيت" title="البيت"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9H3z"/></svg></button>
+            <button class="key mic" data-k="mic" aria-label="المساعد" title="المساعد"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></button>
+          </div>
+          <div class="rcap" style="text-align:center;margin-top:8px">جرّب الأسهم و OK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- 02 home modes -->
+<section id="home" class="cv"><div class="wrap">
+  <div class="sec-head rv"><div class="label"><b>٠٢</b>الشاشة الرئيسية</div><h2>أول ما تفتح الشاشة، تلقى اللي يهمك</h2>
+    <p>القسم الكبير فوق له وضعين، تختار بينهم من الإعدادات: آخر مقاطع قنواتك في يوتيوب، أو الأكثر رواجاً من الأفلام والمسلسلات. وفوقه شريط تنقّل: البحث، الرئيسية، أفلام، مسلسلات، التطبيقات، والإعدادات.</p></div>
+  <div class="rv"><div class="seg" id="seg"><span class="knob"></span><button class="on" data-m="yt">جديد يوتيوب</button><button data-m="trend">الأكثر رواجاً</button></div></div>
+  <div class="strip rv" id="strip"></div>
+  <div class="strip-nav"><button class="ibtn" id="sPrev" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button><button class="ibtn" id="sNext" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+</div></section>
+
+<!-- 03 rafiq -->
+<section id="rafiq" class="cv"><div class="wrap">
+  <div class="sec-head rv"><div class="label"><b>٠٣</b>المساعد «رفيق»</div><h2>كلّمه مثل ما تكلّم صاحبك</h2>
+    <p>اضغط زر المايك وقل اللي تبيه بلهجتك. يرد عليك مكتوب ومسموع، ويسوي الشي بنفسه. ولو طلبك ناقص يسألك سؤال واحد بس.</p></div>
+  <div class="stack">
+    <div class="split rv">
+      <div><h3>يعرف مواعيد مبارياتك</h3><p>اسأله عن أي فريق: متى يلعب، ونتيجة آخر مباراة، وعلى أي قناة.</p>
+        <ul class="ticks"><li>«متى مباراة برشلونة الجاية؟»</li><li>«كم نتيجة الهلال؟»</li><li>«شغّل مباراة فريقي» ويفتحها على تطبيق البث اللي تحدده</li></ul></div>
+      <figure class="shot"><img loading="lazy" src="screenshots/rafiq-barca.jpg" alt="رفيق يجاوب عن مباراة برشلونة"><figcaption>سؤالك فوق، وتحته الرد</figcaption></figure>
+    </div>
+    <div class="split flip rv">
+      <div><h3>يفتح لك يوتيوب على اللي تبيه</h3><p>آخر مقطع لقناة، آخر حلقة من برنامج معيّن، قناة مباشرة، أو أي موضوع تبي تبحث عنه.</p>
+        <ul class="ticks"><li>«افتح لي آخر مقطع لمحمد عدنان»</li><li>«آخر حلقة من البرنامج الفلاني»</li><li>«شغّل القناة الفلانية مباشر»</li></ul></div>
+      <figure class="shot"><img loading="lazy" src="screenshots/rafiq-adnan.jpg" alt="رفيق يفتح آخر مقطع في يوتيوب"><figcaption>طلبت، وبدأ المقطع على طول</figcaption></figure>
+    </div>
+    <div class="split rv">
+      <div><h3>يقترح لك وش تشوف</h3><p>يبحث في مكتبة ضخمة من الأفلام والمسلسلات والأنمي حسب النوع والبلد والسنة، ويعرض لك الاختيارات بالصور.</p>
+        <ul class="ticks"><li>«اقترح لي فيلم عائلي ما فيه لقطات»</li><li>«أنمي أكشن جديد» ثم «افتح الثاني»</li><li>«شي يشبه المسلسل اللي عجبني»</li></ul></div>
+      <figure class="shot"><img loading="lazy" src="screenshots/picks-family.jpg" alt="اقتراحات أفلام عائلية"><figcaption>اقتراحات عائلية بدون لقطات</figcaption></figure>
+    </div>
+  </div>
+  <div class="saylist rv">
+    <div><q>شغّل آخر حلقة من مسلسلي</q><span>يفتحها في تطبيق المشاهدة حقك</span></div>
+    <div><q>شغّل سورة الكهف</q><span>القرآن بملء الشاشة بالقارئ اللي تحبه</span></div>
+    <div><q>وش هذا اللي على الشاشة؟</q><span>يشوف الشاشة ويجاوبك</span></div>
+    <div><q>علّي الصوت · وقّف · كم الساعة</q><span>تتنفذ في أقل من ثانية</span></div>
+  </div>
+  <div class="callout rv">البيت عائلي: رفيق ما يقترح أي محتوى فاضح أبداً، وتقدر تطلب «عائلي» أو «ما فيه لقطات».</div>
+</div></section>
+
+<!-- 04 matches -->
+<section id="matches" class="cv"><div class="wrap">
+  <div class="split flip rv">
+    <div><div class="label"><b>٠٤</b>المباريات</div><h3 style="font-size:clamp(26px,3.6vw,40px)">كل تفاصيل المباراة في صفحة وحدة</h3>
+      <p>تختار أنديتك وبطولاتك، والنتائج تتحدث لحظة بلحظة وقت المباراة. اضغط على أي مباراة وتشوف كل شي.</p>
+      <ul class="ticks"><li>التشكيلة في الملعب لكل فريق</li><li>الأهداف والبطاقات بالدقيقة</li><li>الحكم والملعب وعدد الحضور</li><li>تذكير قبل مباريات أنديتك</li><li>زر يفتح المباراة على تطبيق البث المضبوط عندك</li></ul></div>
+    <figure class="shot"><img loading="lazy" src="screenshots/match.jpg" alt="صفحة مباراة باريس وبرشلونة"><figcaption>باريس سان جيرمان ٤ – ٢ برشلونة</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 05 prayer -->
+<section id="prayer" class="cv"><div class="wrap">
+  <div class="split rv">
+    <div><div class="label"><b>٠٥</b>الصلاة والجمعة</div><h3 style="font-size:clamp(26px,3.6vw,40px)">الشاشة تذكّرك… وتنتظرك</h3>
+      <p>وقت الأذان تقفل الشاشة وتعرض عدّاد للإقامة، وبعدها ترجع مثل ما تركتها.</p>
+      <ul class="ticks"><li>المواقيت حسب مدينتك، والأذان بصوت جميل</li><li>تختار وقت الإقامة لكل صلاة</li><li>يوم الجمعة: تذكير وسورة الكهف</li><li>للطوارئ: اضغط رجوع ٥ ثواني</li></ul></div>
+    <figure class="shot"><img loading="lazy" src="screenshots/prayer-lock.jpg" alt="قفل وقت الصلاة"><figcaption>وقت الصلاة مع عدّاد الإقامة</figcaption></figure>
+  </div>
+</div></section>
+
+<!-- 06 custom -->
+<section id="custom" class="cv"><div class="wrap">
+  <div class="sec-head rv"><div class="label"><b>٠٦</b>التخصيص</div><h2>تبي شي غير اللي تشوفه؟ اطلبه</h2>
+    <p>كل اللي فوق مجرد البداية. افتح نفس الوكيل الذكي اللي ركّب لك TvHome، واطلب منه أي تعديل بكلامك العادي — يعدّل ويبني ويركّب التحديث على شاشتك.</p></div>
+  <div class="prompts rv">
+    <div class="code"><div class="bar"><span>غيّر المدينة والإقامة</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre class="ar">خلّ مواقيت الصلاة والطقس على مدينة الرياض، وخلّ وقت الإقامة لصلاة المغرب ١٠ دقايق وباقي الصلوات ٢٠ دقيقة، وبعدها ركّب التحديث على الشاشة.</pre></div>
+    <div class="code"><div class="bar"><span>صف جديد في الرئيسية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre class="ar">أضف صف جديد في الشاشة الرئيسية اسمه «أنمي الموسم» فيه أحدث الأنمي اللي نزلت حلقاته هالأسبوع، وحطه تحت صف المباريات.</pre></div>
+    <div class="code"><div class="bar"><span>شخصية المساعد</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre class="ar">غيّر اسم المساعد إلى «سند»، وخلّه يرد باللهجة الكويتية وبصوت أهدى، وخلّ ردوده أقصر.</pre></div>
+  </div>
+</div></section>
+
+<!-- 07 tv types -->
+<section id="tvs" class="cv"><div class="wrap">
+  <div class="sec-head rv"><div class="label"><b>٠٧</b>قبل لا تبدأ</div><h2>وش نوع شاشتك؟</h2><p>اختر شاشتك وسوِّ الخطوات. ما تاخذ خمس دقايق.</p></div>
+  <div class="tabs rv" id="tvTabs"><button class="tabbtn on" data-p="android">أندرويد / Google TV</button><button class="tabbtn" data-p="samsung">سامسونج</button><button class="tabbtn" data-p="lg">LG</button><button class="tabbtn" data-p="fire">Fire TV</button></div>
+  <div class="rv" id="tvPanels">
+    <div class="panel on" data-p="android"><div class="card"><h3>كل شاشات أندرويد نفس الطريقة</h3><p>سوني، TCL، هايسنس، شاومي، فيليبس، توشيبا، وأي جهاز Google TV.</p>
+      <ol class="steps">
+        <li><b>سجّل دخول بحسابك في جوجل</b> على الشاشة — المايك والمتجر يحتاجونه.</li>
+        <li><b>فعّل وضع المطوّر:</b> الإعدادات ← النظام ← حول ← اضغط على «Android TV OS build» (أو «الإصدار») ٧ مرات لين يقول «أنت الآن مطوّر».</li>
+        <li><b>فعّل التصحيح:</b> الإعدادات ← النظام ← خيارات المطوّر ← شغّل «تصحيح USB»، ولو تلقى «التصحيح عبر الشبكة» شغّله بعد.</li>
+        <li><b>خذ عنوان الشاشة:</b> الإعدادات ← الشبكة والإنترنت ← شبكتك ← «عنوان IP» (مثل 192.168.1.50).</li>
+        <li><b>خلّ الشاشة والكمبيوتر على نفس الواي فاي.</b> أول ما يتصل الكمبيوتر تطلع رسالة في الشاشة: اختر «السماح دائماً».</li>
+      </ol></div></div>
+    <div class="panel" data-p="samsung"><div class="card"><h3>سامسونج: تحتاج جهاز Google TV صغير</h3><p>شاشات سامسونج نظامها Tizen وليس أندرويد، وتطبيقات أندرويد ما تشتغل عليها.</p>
+      <div class="hint" style="margin:0 0 18px">بخصوص الرقم <b>١٢٣٤٥</b>: صحيح، لو فتحت «التطبيقات» وكتبت 12345 بالريموت يطلع لك «وضع المطوّر» في سامسونج. بس هذا الوضع لتطبيقات Tizen فقط (ملفات ‎.wgt‎ عن طريق Tizen Studio)، وما يقدر يركّب تطبيق أندرويد مثل TvHome. فما تحتاجه هنا.</div>
+      <ol class="steps">
+        <li><b>جيب جهاز Google TV صغير</b> وركّبه على منفذ HDMI — مثل Google TV Streamer أو Chromecast مع Google TV أو Xiaomi TV Box أو Nvidia Shield.</li>
+        <li><b>فعّل Anynet+ (HDMI-CEC)</b> عشان ريموت الجهاز يشغّل الشاشة ويتحكم بالصوت: الإعدادات ← الاتصال (أو «عام») ← مدير الأجهزة الخارجية ← Anynet+.</li>
+        <li>بعدها سوِّ خطوات <b>أندرويد</b> على الجهاز الصغير، وكمّل التركيب عادي.</li>
+      </ol></div></div>
+    <div class="panel" data-p="lg"><div class="card"><h3>LG: تحتاج جهاز Google TV صغير</h3><p>شاشات LG نظامها webOS وليس أندرويد، فنفس حل سامسونج.</p>
+      <div class="hint" style="margin:0 0 18px">LG فيها تطبيق اسمه «Developer Mode»، بس هو لتطبيقات webOS فقط (ملفات ‎.ipk‎)، ويحتاج حساب مطوّر وتنتهي صلاحيته كل كم يوم. ما يركّب تطبيقات أندرويد.</div>
+      <ol class="steps">
+        <li><b>جيب جهاز Google TV صغير</b> وركّبه على HDMI.</li>
+        <li><b>فعّل SimpLink (HDMI-CEC):</b> الإعدادات ← عام ← الأجهزة ← إعدادات HDMI ← SimpLink — عشان ريموت واحد يكفيك.</li>
+        <li>بعدها سوِّ خطوات <b>أندرويد</b> على الجهاز الصغير.</li>
+      </ol></div></div>
+    <div class="panel" data-p="fire"><div class="card"><h3>Fire TV من أمازون</h3><p>نظامه مبني على أندرويد ويركب عليه، لكن ما فيه مساعد جوجل، فالمايك ما يوصل لرفيق. الأفضل جهاز Google TV.</p>
+      <ol class="steps">
+        <li>الإعدادات ← My Fire TV ← About ← اضغط على اسم الجهاز ٧ مرات.</li>
+        <li>Developer options ← شغّل ADB debugging.</li>
+        <li>خذ العنوان من About ← Network، وكمّل مثل أندرويد.</li>
+      </ol></div></div>
+  </div>
+</div></section>
+
+<!-- 08 download -->
+<section id="download" class="cv"><div class="wrap">
+  <div class="sec-head rv"><div class="label"><b>٠٨</b>التحميل والتركيب</div><h2>ركّبها بالطريقة اللي تريحك</h2><p>الأسهل تخلي وكيل ذكاء اصطناعي يركّبها معك. وإذا تحب تسويها بنفسك، الخطوات كلها تحت.</p></div>
+  <div class="need rv">
+    <div><b>شاشة جاهزة <em class="req">لازم</em></b>سوِّ خطوات «وش نوع شاشتك».</div>
+    <div><b>كمبيوتر <em class="req">لازم</em></b>ماك أو ويندوز أو لينكس، على نفس الواي فاي.</div>
+    <div><b>مفتاح TMDB <em class="req">لازم · مجاني</em></b>للأفلام والمسلسلات: سجّل في themoviedb.org وخذ «API Read Access Token».</div>
+    <div><b>مفتاح ذكاء اصطناعي <em>لرفيق</em></b>واحد يكفي: Gemini (فيه مجاني) أو Anthropic أو Experiential Labs.</div>
+    <div><b>قنوات يوتيوب <em>اختياري</em></b>قائمة قنواتك عشان صف «جديد يوتيوب».</div>
+    <div><b>حساب جوجل <em>اختياري</em></b>للمايك، ولوضع «صور جوجل» في شاشة التوقف.</div>
+  </div>
+  <p class="rv" style="color:var(--dim);font-size:14px;margin:12px 0 0">المجلد ما فيه أي مفاتيح أو حسابات لأحد — كل واحد يحط مفاتيحه هو.</p>
+
+  <div class="ways rv" id="ways">
+    <button class="way on" data-w="ai"><span class="tag">الأسهل</span><h3>بالذكاء الاصطناعي</h3><p>تعطيه البرومبت، يسألك وش تبي، ويركّب كل شي.</p></button>
+    <button class="way" data-w="manual"><h3>يدوي بالتفصيل</h3><p>خطوة بخطوة بالأوامر، لو تحب تعرف وش يصير.</p></button>
+  </div>
+  <div id="wayPanels" class="rv">
+  <div class="panel on" data-w="ai"><div class="card">
+    <ol class="steps">
+      <li><b>جهّز الشاشة</b> من قسم «وش نوع شاشتك».</li>
+      <li><b>حمّل المجلد</b> وفك الضغط في أي مكان بجهازك.</li>
+      <li><b>افتح وكيل ذكاء اصطناعي يشتغل على جهازك</b> داخل المجلد — مثل Claude Code أو Codex أو Cursor. لازم يكون وكيل يقدر يشغّل أوامر على الكمبيوتر، مو موقع محادثة عادي.</li>
+      <li><b>الصق له البرومبت هذا</b> وجاوب على أسئلته، وهو يكمّل الباقي.</li>
+    </ol>
+    <div class="code" style="margin-top:18px"><div class="bar"><span>برومبت التركيب</span><button class="copy" data-for="installPrompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ البرومبت</button></div>
+<pre class="ar" id="installPrompt">أنت وكيل برمجة شغّال على جهازي، وأبغاك تركّب TvHome على شاشتي من البداية للنهاية.
+
+١. استخدم المجلد اللي أنت فاتحه الحين. لو ما فيه ملف install.md حمّل المشروع من:
+   https://github.com/Mo3athAmr/TvHome
+٢. اقرأ install.md وامشِ عليه خطوة بخطوة.
+٣. قبل ما تبدأ اسألني برسالة وحدة: عنوان IP الشاشة، مدينتي، المزايا اللي أبغاها، والمفاتيح (TMDB ومفتاح الذكاء الاصطناعي). لو ما عندي مفتاح علّمني كيف أطلعه.
+٤. لا تعطّل ولا تحذف أي شي في الشاشة قبل ما تعرض لي القائمة وأوافق.
+٥. مفاتيحي تنحط في ملف local.properties بس، ولا تكتبها في المحادثة.
+٦. خلّ جهازي خفيف وقت البناء، وبعد ما تخلص قل لي وش ركّبت وكيف أرجّع كل شي.
+
+شاشتي جاهزة: وضع المطوّر والتصحيح مفعّلين، والشاشة والكمبيوتر على نفس الواي فاي.</pre></div>
+    <div class="dl">
+      <a class="btn light" href="https://github.com/Mo3athAmr/TvHome/archive/refs/heads/main.zip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>حمّل المجلد</a>
+      <a class="btn" href="https://github.com/Mo3athAmr/TvHome" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>المشروع على GitHub</a>
+    </div>
+  </div></div>
+  <div class="panel" data-w="manual">
+    <details class="acc" open><summary><span class="n">١</span>ركّب الأدوات في الكمبيوتر</summary><div class="body">
+      <p>تحتاج <b>JDK 21</b> و<b>Android SDK</b> (المنصة 36) و<b>adb</b>. أسهل شي تركّب Android Studio وهو يجيبها كلها.</p>
+      <div class="code"><div class="bar"><span>تأكد إنها موجودة</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>java -version
+adb version</pre></div></div></details>
+    <details class="acc"><summary><span class="n">٢</span>حمّل المجلد وحط مفاتيحك</summary><div class="body">
+      <p>فك ضغط المجلد، وانسخ ملف المثال، وعبّي فيه مسار SDK ومفتاح TMDB ومفتاح الذكاء الاصطناعي.</p>
+      <div class="code"><div class="bar"><span>الطرفية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>cd TvHome-main
+cp local.properties.example local.properties</pre></div>
+      <p style="margin-top:10px;color:var(--muted)">مدينتك غير الخبر؟ اطلب من الوكيل الذكي يغيّرها، أو عدّلها في <code>prayer/PrayerTimes.kt</code>.</p></div></details>
+    <details class="acc"><summary><span class="n">٣</span>ابنِ التطبيق</summary><div class="body">
+      <div class="code"><div class="bar"><span>الطرفية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>./gradlew :app:assembleRelease</pre></div>
+      <p style="margin-top:10px;color:var(--muted)">ياخذ كم دقيقة أول مرة. الناتج في <code>app/build/outputs/apk/release/</code></p></div></details>
+    <details class="acc"><summary><span class="n">٤</span>ركّبه على الشاشة</summary><div class="body">
+      <p>غيّر 192.168.1.50 لعنوان شاشتك، ووافق على رسالة «السماح» في الشاشة.</p>
+      <div class="code"><div class="bar"><span>الطرفية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>adb connect 192.168.1.50:5555
+adb install -r app/build/outputs/apk/release/app-release.apk
+TV=192.168.1.50:5555 ./scripts/after-install.sh</pre></div></div></details>
+    <details class="acc"><summary><span class="n">٥</span>خلّها الواجهة الرئيسية</summary><div class="body">
+      <p>يخلي TvHome يطلع لما تضغط زر البيت، ويضبط شاشة التوقف. الواجهة الأصلية تتعطّل بس — ما تنحذف — وترجع متى ما بغيت.</p>
+      <div class="code"><div class="bar"><span>الطرفية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>TV=192.168.1.50:5555 ./scripts/set-home.sh</pre></div></div></details>
+    <details class="acc"><summary><span class="n">٦</span>إضافات (اختياري)</summary><div class="body">
+      <p>قنواتك في يوتيوب: ملف <code>youtube_channels.txt</code> فيه معرّف كل قناة أو @اسمها في سطر. والسطر الثاني يضبط الساعة لو انقطعت الكهرباء.</p>
+      <div class="code"><div class="bar"><span>الطرفية</span><button class="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>نسخ</button></div><pre>adb push youtube_channels.txt /sdcard/Android/data/com.moath.tvhome/files/
+adb shell settings put global ntp_server 162.159.200.123</pre></div>
+      <p style="margin-top:10px;color:var(--muted)">وبعدها من الريموت: الإعدادات ← تخصيص، واختر الأذان والأندية والمساعد وشاشة التوقف.</p></div></details>
+    <div class="hint good">تبي ترجع شاشتك مثل أول؟ <code>TV=192.168.1.50:5555 ./scripts/restore.sh</code> — يرجّع كل شي، ولو تبي تحذف TvHome أضف <code>--uninstall</code>.</div>
+  </div>
+  </div>
+</div></section>
+
+<!-- 09 faq -->
+<section id="faq" class="cv"><div class="wrap" style="max-width:800px">
+  <div class="sec-head rv"><div class="label"><b>٠٩</b>أسئلة</div><h2>أكيد عندك سؤال</h2></div>
+  <div class="rv">
+    <details class="acc"><summary>يحذف شي من شاشتي؟</summary><div class="body"><p>لا. ما ينحذف شي، وأي تطبيق يتعطّل يكون بموافقتك ويرجع بأمر واحد.</p></div></details>
+    <details class="acc"><summary>أقدر أرجّع شاشتي مثل أول؟</summary><div class="body"><p>أكيد. سكربت الإرجاع يرجّع الواجهة الأصلية وكل التطبيقات المعطّلة.</p></div></details>
+    <details class="acc"><summary>يحتاج اشتراك أو فلوس؟</summary><div class="body"><p>TvHome مجاني. مفتاح TMDB مجاني، ومفتاح الذكاء الاصطناعي فيه خيار مجاني (Gemini) بحدود يومية.</p></div></details>
+    <details class="acc"><summary>وش يصير لو ما حطيت مفتاح ذكاء اصطناعي؟</summary><div class="body"><p>كل شي يشتغل عادي، بس رفيق ما يجاوب الأسئلة. الأوامر السريعة مثل الصوت وفتح التطبيقات تشتغل بدونه.</p></div></details>
+    <details class="acc"><summary>يشتغل على سامسونج أو LG؟</summary><div class="body"><p>مو مباشرة، لأن نظامها مو أندرويد — حتى وضع المطوّر فيها (مثل 12345 في سامسونج) لتطبيقاتها هي بس. ركّب جهاز Google TV صغير على HDMI ويصير عندك كل شي.</p></div></details>
+    <details class="acc"><summary>فيه محتوى ما يناسب العائلة؟</summary><div class="body"><p>فيه فلتر دائم يمنع المحتوى الفاضح في الاقتراحات والبحث، وتقدر تطلب «عائلي» أو «ما فيه لقطات».</p></div></details>
+    <details class="acc"><summary>من وين يجيب الأفلام والمباريات؟</summary><div class="body"><p>TvHome ما يبث شي بنفسه؛ يفتح لك الشي في التطبيقات اللي عندك. أنت المسؤول عن التطبيقات والإضافات اللي تستخدمها.</p></div></details>
+  </div>
+</div></section>
+</main>
+
+<footer id="foot"><div class="wrap">
+  <div class="word" id="word">TvHome</div>
+  <div class="fl">
+    <nav><a href="https://github.com/Mo3athAmr/TvHome" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/Mo3athAmr/TvHome/archive/refs/heads/main.zip">تحميل</a><a href="https://github.com/Mo3athAmr/TvHome/blob/main/install.md" target="_blank" rel="noopener">install.md</a><a href="#try">جرّبها</a><a href="#faq">أسئلة</a></nav>
+    <span>غير مرتبط بجوجل أو يوتيوب أو أي خدمة مذكورة.</span>
+  </div>
+  <div class="made">صُنع بواسطة معاذ الحكيم ♥️</div>
+</div></footer>
+<div id="lb"><img alt=""></div>
+
+<script>
+(function(){"use strict";
+var $=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* header, menu, active section — one rAF-throttled scroll handler */
+var nav=$("#nav"),menu=$("#menu"),tv=$("#tv"),links=$$("#menu a").map(function(a){return[a,document.getElementById(a.getAttribute("href").slice(1))]}),ticking=false;
+function frame(){ticking=false;var y=scrollY;nav.classList.toggle("solid",y>12);
+  var cur=null;links.forEach(function(p){if(p[1]&&p[1].getBoundingClientRect().top<140)cur=p[0]});links.forEach(function(p){p[0].classList.toggle("on",p[0]===cur)});
+  if(!reduce){var r=tv.getBoundingClientRect(),vh=innerHeight,p=Math.min(1,Math.max(0,(vh-r.top)/(vh*.75)));
+    tv.style.setProperty("--tilt",(14*(1-p)).toFixed(2)+"deg");tv.style.setProperty("--ty",(30*(1-p)).toFixed(1)+"px");tv.style.setProperty("--sc",(.94+.06*p).toFixed(3))}}
+addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(frame)}},{passive:true});addEventListener("resize",frame);frame();
+$("#burger").addEventListener("click",function(){menu.classList.toggle("open")});
+$$("#menu a").forEach(function(a){a.addEventListener("click",function(){menu.classList.remove("open")})});
+
+/* reveal */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
+$$(".rv").forEach(function(el){io.observe(el)});
+
+/* footer light */
+var word=$("#word");$("#foot").addEventListener("pointermove",function(e){var r=word.getBoundingClientRect();word.style.setProperty("--fx",e.clientX-r.left+"px");word.style.setProperty("--fy",e.clientY-r.top+"px")});
+
+/* lightbox */
+var lb=$("#lb"),lbi=$("img",lb);
+document.addEventListener("click",function(e){var im=e.target.closest&&e.target.closest(".shot img");if(!im)return;lbi.src=im.src;lbi.alt=im.alt;lb.classList.add("on")});
+lb.addEventListener("click",function(){lb.classList.remove("on")});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")lb.classList.remove("on")});
+
+/* copy */
+$$(".copy").forEach(function(b){b.addEventListener("click",function(){
+  var pre=b.dataset.for?document.getElementById(b.dataset.for):b.closest(".code").querySelector("pre"),txt=pre.innerText,old=b.innerHTML;
+  function ok(){b.classList.add("done");b.textContent="تم النسخ";setTimeout(function(){b.classList.remove("done");b.innerHTML=old},1500)}
+  function fb(){var t=document.createElement("textarea");t.value=txt;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();try{document.execCommand("copy");ok()}catch(e){}t.remove()}
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(ok,fb);else fb();
+})});
+
+/* tabs */
+function tabs(btns,attr,scope){$$(btns).forEach(function(b){b.addEventListener("click",function(){
+  $$(btns).forEach(function(x){x.classList.toggle("on",x===b)});
+  $$(".panel",$(scope)).forEach(function(p){p.classList.toggle("on",p.getAttribute(attr)===b.getAttribute(attr))})})})}
+tabs("#tvTabs .tabbtn","data-p","#tvPanels");tabs("#ways .way","data-w","#wayPanels");
+
+/* home modes strip */
+var MODES={
+  yt:[["home-yt.jpg","القسم الكبير: آخر مقاطع قنواتك، وفوقه شريط التنقّل"],["rows-youtube.jpg","تنزل: جديد يوتيوب، المباريات، أحدث الأفلام"],["rows-matches.jpg","مبارياتك بالنتائج المباشرة"],["home-latest.jpg","أحدث المسلسلات والأنمي — تتجدد كل ربع ساعة"]],
+  trend:[["home-trend.jpg","القسم الكبير: الأكثر رواجاً من الأفلام والمسلسلات"],["home-trend-hero.jpg","مع نبذة وزر تشغيل وزر «مزيد من المعلومات»"],["tab-movies.jpg","قسم الأفلام"],["tab-series.jpg","قسم المسلسلات"]]
+};
+var strip=$("#strip"),seg=$("#seg"),knob=$(".knob",seg);
+function place(b){knob.style.width=b.offsetWidth+"px";knob.style.right=(seg.getBoundingClientRect().right-b.getBoundingClientRect().right)+"px"}
+function fill(m,anim){var html=MODES[m].map(function(x){return'<figure class="shot"><img loading="lazy" decoding="async" src="screenshots/'+x[0]+'" alt="'+x[1]+'"><figcaption>'+x[1]+"</figcaption></figure>"}).join("");
+  if(!anim||reduce){strip.innerHTML=html;return}strip.classList.add("swap");setTimeout(function(){strip.innerHTML=html;strip.scrollTo({left:0});requestAnimationFrame(function(){requestAnimationFrame(function(){strip.classList.remove("swap")})})},180)}
+$$("button",seg).forEach(function(b){b.addEventListener("click",function(){$$("button",seg).forEach(function(x){x.classList.toggle("on",x===b)});place(b);fill(b.dataset.m,true)})});
+fill("yt",false);requestAnimationFrame(function(){place($("button.on",seg))});addEventListener("resize",function(){place($("button.on",seg))});
+function stripStep(d){var f=$("figure",strip);if(f)strip.scrollBy({left:d*(f.offsetWidth+14),behavior:"smooth"})}
+$("#sNext").addEventListener("click",function(){stripStep(-1)});$("#sPrev").addEventListener("click",function(){stripStep(1)});
+
+/* ── TV simulator ── */
+var hero="yt";
+var TABS=["search","home","movies","series","apps","settings"]; /* right → left on screen */
+var PILL={search:[67.8,7.6,3.4],home:[62.3,7.6,7.4],movies:[55.1,7.6,5.6],series:[46.9,7.6,7.4],apps:[38.4,7.6,8.2],settings:[32.2,7.6,3.4]};
+var NAMES={search:"البحث",home:"الرئيسية",movies:"أفلام",series:"مسلسلات",apps:"التطبيقات",settings:"الإعدادات"};
+var S={
+  "pill:home":{img:function(){return hero==="yt"?"home-yt.jpg":"home-trend.jpg"},where:"شريط التنقّل",keys:{down:"hero",ok:"hero"}},
+  "pill:movies":{img:"tab-movies.jpg",where:"شريط التنقّل · أفلام",keys:{down:"toast:تنزل لصفوف الأفلام 🎬",ok:"toast:يفتح الفيلم المعروض"}},
+  "pill:series":{img:"tab-series.jpg",where:"شريط التنقّل · مسلسلات",keys:{down:"toast:تنزل لصفوف المسلسلات",ok:"toast:يفتح المسلسل المعروض"}},
+  "pill:apps":{img:"tab-apps.jpg",where:"التطبيقات",keys:{down:"toast:تختار أي تطبيق وتضغط OK",ok:"toast:يفتح التطبيق"}},
+  "pill:search":{img:"tab-search.jpg",where:"البحث",keys:{down:"toast:تكتب بالكيبورد أو بالمايك",ok:"toast:اكتب اسم فيلم أو مسلسل أو تطبيق"}},
+  "pill:settings":{img:"settings-customize.jpg",where:"الإعدادات",keys:{down:"set:prayer",ok:"set:prayer"}},
+  hero:{img:function(){return hero==="yt"?"home-yt-hero.jpg":"home-trend-hero.jpg"},where:"الرئيسية",keys:{up:"pill:home",down:"r:apps",ok:"toast:"+"يبدأ التشغيل ▶️"},hots:[[78,74,10,9,"ok"],[0,85,100,15,"down"]]},
+  "r:apps":{img:"rows-apps.jpg",where:"تطبيقاتك",keys:{up:"hero",down:"r:yt",ok:"toast:يفتح التطبيق"},hots:[[0,0,100,10,"up"],[0,45,100,35,"down"]]},
+  "r:yt":{img:"rows-youtube.jpg",where:"جديد يوتيوب",keys:{up:"r:apps",down:"r:matches",ok:"toast:يفتح المقطع في يوتيوب ▶️"},hots:[[0,48,100,35,"down"]]},
+  "r:matches":{img:"rows-matches.jpg",where:"المباريات — اضغط OK",keys:{up:"r:yt",down:"r:latest",ok:"match"},hots:[[72.6,15.5,26,24,"ok"],[0,45,100,40,"down"]]},
+  "r:latest":{img:"home-latest.jpg",where:"أحدث الأفلام والمسلسلات",keys:{up:"r:matches",down:"r:popular",ok:"toast:يفتح صفحة العمل 🎬"}},
+  "r:popular":{img:"home-popular.jpg",where:"الأكثر شيوعاً",keys:{up:"r:latest",down:"toast:هذا آخر صف",ok:"toast:يفتح صفحة العمل 🎬"}},
+  match:{img:"match.jpg",where:"صفحة المباراة",keys:{back:"r:matches",up:"r:matches",ok:"toast:يفتح المباراة على تطبيق البث حقك"}},
+  "set:prayer":{img:"settings-prayer.jpg",where:"الإعدادات · الأذان",keys:{up:"pill:settings",down:"set:jumuah",back:"pill:settings"}},
+  "set:jumuah":{img:"settings-jumuah.jpg",where:"الإعدادات · الجمعة",keys:{up:"set:prayer",down:"set:ai",back:"pill:settings"}},
+  "set:ai":{img:"settings-assistant.jpg",where:"الإعدادات · المساعد",keys:{up:"set:jumuah",down:"set:clubs",back:"pill:settings"}},
+  "set:clubs":{img:"settings-clubs.jpg",where:"الإعدادات · الأندية",keys:{up:"set:ai",down:"set:saver",back:"pill:settings"}},
+  "set:saver":{img:"settings-saver.jpg",where:"الإعدادات · شاشة التوقف",keys:{up:"set:clubs",back:"pill:settings"}},
+  saver:{img:"prayer-dashboard.jpg",where:"شاشة التوقف — أي زر يرجعك",keys:{ok:"pill:home",back:"pill:home",up:"pill:home",down:"pill:home",left:"pill:home",right:"pill:home"}},
+  lock:{img:"prayer-lock.jpg",where:"وقت الصلاة",keys:{back:"toast:للطوارئ: اضغط رجوع مطوّلاً ٥ ثواني",ok:"toast:الشاشة ترجع بعد الإقامة 🤍",up:"toast:الشاشة مقفلة لين الإقامة",down:"toast:الشاشة مقفلة لين الإقامة"}},
+  family:{img:"picks-family.jpg",where:"اقتراحات رفيق",keys:{back:"pill:home",up:"pill:home",ok:"toast:يفتح صفحة الفيلم 🎬",left:"toast:تتنقل بين الاختيارات",right:"toast:تتنقل بين الاختيارات"}},
+  korean:{img:"picks-korean.jpg",where:"اقتراحات رفيق",keys:{back:"pill:home",up:"pill:home",ok:"toast:يفتح صفحة المسلسل 🎬",left:"toast:تتنقل بين الاختيارات",right:"toast:تتنقل بين الاختيارات"}},
+  barca:{img:"rafiq-barca.jpg",where:"رفيق",keys:{back:"pill:home",ok:"pill:home"}},
+  adnan:{img:"rafiq-adnan.jpg",where:"يوتيوب",keys:{back:"pill:home",ok:"toast:يشتغل المقطع ▶️"}},
+  adnanPlay:{img:"adnan-video.jpg",where:"يوتيوب",keys:{back:"pill:home",ok:"toast:إيقاف مؤقت ⏸"}}
+};
+var SAYS={
+  barca:{q:"متى مباراة برشلونة الجاية؟",a:"المباراة الجاية لبرشلونة هي الكلاسيكو ضد ريال مدريد يوم الأحد الساعة ١١ بالليل.",go:"barca",then:null},
+  family:{q:"اقترح لي فيلم عائلي ما فيه لقطات",a:"أبشر، هذي أفلام عائلية تناسب الكل، اختر اللي يعجبك 🍿",go:"family"},
+  korean:{q:"مسلسل رعب كوري جديد",a:"هذي أحدث مسلسلات الرعب الكورية، قل لي أفتح أي واحد 👻",go:"korean"},
+  adnan:{q:"افتح لي آخر مقطع لمحمد عدنان",a:"شغّلت آخر مقطع لمحمد عدنان ▶️",go:"adnan",then:"adnanPlay"}
+};
+var scr=$("#screen"),plate=$("#plate"),pq=$("#pq"),pa=$("#pa"),veil=$("#veil"),toastEl=$("#toast"),where=$("#where"),cur=null,busy=false,tt,frames={};
+function src(st){return typeof st.img==="function"?st.img():st.img}
+function frameFor(f){if(!frames[f]){var im=new Image();im.className="f";im.alt="";im.decoding="async";im.src="screenshots/"+f;scr.insertBefore(im,veil);frames[f]=im}return frames[f]}
+function toast(t){toastEl.textContent=t;toastEl.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){toastEl.classList.remove("on")},2000)}
+function go(k){
+  if(k.indexOf("toast:")===0)return toast(k.slice(6));
+  var st=S[k];if(!st)return;cur=k;var f=frameFor(src(st));
+  requestAnimationFrame(function(){Object.keys(frames).forEach(function(n){frames[n].classList.toggle("on",frames[n]===f)})});
+  where.textContent=st.where||"";
+  $$(".hot",scr).forEach(function(h){h.remove()});
+  var hs=(st.hots||[]).slice();
+  if(k.indexOf("pill:")===0||k==="hero")TABS.forEach(function(t){var p=PILL[t];hs.push([p[0]-p[2]/2,p[1]-3.2,p[2],6.4,"tab:"+t])});
+  hs.forEach(function(h){var d=document.createElement("div");d.className="hot";d.title=h[4].indexOf("tab:")===0?NAMES[h[4].slice(4)]:"";d.style.cssText="left:"+h[0]+"%;top:"+h[1]+"%;width:"+h[2]+"%;height:"+h[3]+"%";
+    d.addEventListener("click",function(e){e.stopPropagation();if(h[4].indexOf("tab:")===0)go("pill:"+h[4].slice(4));else key(h[4])});scr.appendChild(d)});
+  var tab=k.indexOf("pill:")===0?k.slice(5):(k.indexOf("set:")===0?"settings":(k==="hero"||k.indexOf("r:")===0||k==="match"||k==="saver"?"home":null));
+  $$("#pills .tabbtn").forEach(function(b){b.classList.toggle("on",b.dataset.tab===tab)});
+}
+function key(k){
+  if(busy)return;
+  if(k==="mic"){var ids=Object.keys(SAYS);return ask(ids[Math.floor(Math.random()*ids.length)])}
+  if(k==="home")return go(cur==="pill:home"||cur==="hero"?"saver":"pill:home");
+  if(cur&&cur.indexOf("pill:")===0&&(k==="left"||k==="right")){var i=TABS.indexOf(cur.slice(5))+(k==="left"?1:-1);if(i>=0&&i<TABS.length)go("pill:"+TABS[i]);return}
+  if(cur&&cur.indexOf("pill:")===0&&k==="up")return toast("أنت في أعلى الشاشة");
+  var st=S[cur],t=st&&st.keys[k];
+  if(t)go(t);else if(k==="back")go(cur&&cur.indexOf("pill:")===0?"saver":"pill:home");
+}
+function type(el,s,ms,cb){var i=0;el.textContent="";if(reduce){el.textContent=s;return cb&&cb()}(function t(){el.textContent=s.slice(0,++i);i<s.length?setTimeout(t,ms):cb&&cb()})()}
+function ask(id){var s=SAYS[id];if(!s||busy)return;busy=true;
+  if(cur==="saver"||cur==="lock")go("pill:home");
+  pq.textContent="أسمعك…";pa.textContent="";plate.classList.add("on","listen");veil.classList.add("on");
+  setTimeout(function(){type(pq,s.q,42,function(){plate.classList.remove("listen");veil.classList.remove("on");
+    setTimeout(function(){type(pa,s.a,20,function(){setTimeout(function(){
+      go(s.go);plate.classList.remove("on");
+      if(s.then)setTimeout(function(){go(s.then);busy=false},2200);else busy=false;
+    },650)})},300)})},800)}
+$$("[data-k]").forEach(function(b){b.addEventListener("click",function(){key(b.dataset.k)})});
+$$("#pills .tabbtn").forEach(function(b){b.addEventListener("click",function(){go("pill:"+b.dataset.tab)})});
+$$("[data-go]").forEach(function(b){b.addEventListener("click",function(){go(b.dataset.go)})});
+$$("#cmds .cmd").forEach(function(b){b.addEventListener("click",function(){ask(b.dataset.say)})});
+$$("#heroSw button").forEach(function(b){b.addEventListener("click",function(){hero=b.dataset.h;$$("#heroSw button").forEach(function(x){x.classList.toggle("on",x===b)});if(cur==="pill:home"||cur==="hero")go(cur);else go("pill:home");toast(hero==="yt"?"القسم الكبير: جديد يوتيوب":"القسم الكبير: الأكثر رواجاً")})});
+var KM={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",Enter:"ok",Backspace:"back",Escape:"back"};
+scr.addEventListener("keydown",function(e){if(KM[e.key]){e.preventDefault();key(KM[e.key])}});
+scr.addEventListener("click",function(){scr.focus({preventScroll:true})});
+go("pill:home");
+["home-yt-hero.jpg","rows-apps.jpg","tab-movies.jpg"].forEach(function(f){setTimeout(function(){frameFor(f)},1200)});
+})();
+</script>
+</body>
+</html>
