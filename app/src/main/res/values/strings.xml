@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system_ui_description">Shows the Apple TV Control Center and App Switcher anywhere on the box.</string>
+    <string name="screen_reader_description">Reads the screen briefly when tvhome needs it (assistant, channel tuning).</string>
+</resources>

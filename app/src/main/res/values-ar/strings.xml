@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="system_ui_description">يعرض مركز التحكم ومبدّل التطبيقات في أي مكان على الجهاز.</string>
+    <string name="screen_reader_description">يقرأ الشاشة لثوانٍ عند الحاجة فقط (المساعد واختيار القناة).</string>
+</resources>

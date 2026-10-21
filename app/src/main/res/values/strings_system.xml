@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Control Center -->
+    <string name="sys_cc_sleep">Sleep</string>
+    <string name="sys_cc_screensaver">Screen Saver</string>
+    <string name="sys_cc_wifi">Wi-Fi</string>
+    <string name="sys_cc_wifi_off">Not Connected</string>
+    <string name="sys_cc_wifi_connected">Connected</string>
+    <string name="sys_cc_ethernet">Ethernet</string>
+    <string name="sys_cc_network">Network</string>
+    <string name="sys_cc_bluetooth">Bluetooth</string>
+    <string name="sys_cc_search">Search</string>
+    <string name="sys_cc_settings">Settings</string>
+    <string name="sys_cc_volume">Volume</string>
+    <!-- App Switcher -->
+    <string name="sys_switcher_home">Home</string>
+</resources>

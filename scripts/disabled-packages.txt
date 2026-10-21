@@ -1,0 +1,2 @@
+# Apps disabled on this TV with `pm disable-user --user 0` (one package per line).
+# scripts/set-home.sh and the install agent append to this file; scripts/restore.sh re-enables them all.

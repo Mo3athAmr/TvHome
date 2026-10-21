@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Root -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_general">عام</string>
+    <string name="settings_video_audio">الصورة والصوت</string>
+    <string name="settings_screen_saver">شاشة التوقف</string>
+    <string name="settings_home_screen">الشاشة الرئيسية</string>
+    <string name="settings_remotes">أجهزة التحكم والأجهزة</string>
+    <string name="settings_apps">التطبيقات</string>
+    <string name="settings_network">الشبكة</string>
+    <string name="settings_system">النظام</string>
+
+    <!-- Shared values -->
+    <string name="settings_on">تشغيل</string>
+    <string name="settings_off">إيقاف</string>
+    <string name="settings_none">لا شيء</string>
+    <string name="settings_unknown">غير معروف</string>
+
+    <!-- General -->
+    <string name="settings_about">حول</string>
+    <string name="settings_language_region">اللغة والمنطقة</string>
+    <string name="settings_language">اللغة</string>
+    <string name="settings_date_time">التاريخ والوقت</string>
+    <string name="settings_keyboard">لوحة المفاتيح</string>
+    <string name="settings_name">الاسم</string>
+    <string name="settings_model">الطراز</string>
+    <string name="settings_android_version">إصدار أندرويد</string>
+    <string name="settings_security_patch">تحديث الأمان</string>
+    <string name="settings_build">رقم الإصدار</string>
+    <string name="settings_storage">التخزين</string>
+    <string name="settings_storage_value">مستخدم %1$s من %2$s</string>
+    <string name="settings_available">المتاح</string>
+    <string name="settings_memory">الذاكرة</string>
+    <string name="settings_resolution">الدقة</string>
+    <string name="settings_header_device">الجهاز</string>
+    <string name="settings_header_software">البرنامج</string>
+    <string name="settings_header_hardware">العتاد</string>
+
+    <!-- Remotes -->
+    <string name="settings_bluetooth">البلوتوث</string>
+    <string name="settings_pair_accessory">إقران ريموت أو ملحق</string>
+    <string name="settings_header_paired">أجهزتي</string>
+    <string name="settings_bluetooth_footer">إدارة ريموتات البلوتوث وأذرع الألعاب ولوحات المفاتيح والسماعات.</string>
+    <string name="settings_pair_footer">ضع الريموت أو الملحق في وضع الإقران ثم اخترْه من القائمة.</string>
+
+    <!-- Apps -->
+    <string name="settings_hidden">مخفي</string>
+    <string name="settings_apps_loading">جارٍ تحميل التطبيقات…</string>
+    <string name="settings_app_open">فتح</string>
+    <string name="settings_app_hide">إخفاء من الشاشة الرئيسية</string>
+    <string name="settings_app_info">معلومات التطبيق</string>
+    <string name="settings_app_uninstall">إلغاء التثبيت</string>
+    <string name="settings_app_version">الإصدار</string>
+    <string name="settings_app_package">المعرّف</string>
+    <string name="settings_app_info_footer">التخزين والأذونات والإشعارات وإيقاف التطبيق قسراً.</string>
+    <string name="settings_app_hide_footer">التطبيقات المخفية تبقى مثبتة ويمكن فتحها من هنا.</string>
+
+    <!-- Video and Audio -->
+    <string name="settings_format">الصيغة</string>
+    <string name="settings_audio_output">مخرج الصوت</string>
+    <string name="settings_nav_clicks">نقرات التنقل</string>
+    <string name="settings_header_video">الصورة</string>
+    <string name="settings_header_audio">الصوت</string>
+    <string name="settings_nav_clicks_footer">تشغيل نقرة عند تحرّك التركيز. يجب أن تكون المؤثرات الصوتية للنظام مفعّلة أيضاً.</string>
+
+    <!-- Screen Saver -->
+    <string name="settings_type">النوع</string>
+    <string name="settings_start_after">البدء بعد</string>
+    <string name="settings_show_location">إظهار الموقع</string>
+    <string name="settings_show_clock">إظهار الساعة</string>
+    <string name="settings_aerial_4k">تنزيل فيديوهات 4K</string>
+    <string name="settings_preview">معاينة</string>
+    <string name="settings_aerial">Aerial</string>
+    <string name="settings_never">أبداً</string>
+    <string name="settings_minutes">%1$d دقيقة</string>
+    <string name="settings_minute">دقيقة واحدة</string>
+    <string name="settings_seconds">%1$d ثانية</string>
+    <string name="settings_header_aerial">Aerial</string>
+    <string name="settings_type_footer">اختر شاشة التوقف التي تعمل عندما يكون الجهاز خاملاً.</string>
+    <string name="settings_start_after_footer">المدة التي ينتظرها الجهاز قبل بدء شاشة التوقف.</string>
+    <string name="settings_4k_footer">يستهلك بيانات ومساحة أكثر. يفيد فقط مع شاشة 4K.</string>
+
+    <!-- Network -->
+    <string name="settings_connection">الاتصال</string>
+    <string name="settings_wifi">الواي فاي</string>
+    <string name="settings_ethernet">إيثرنت</string>
+    <string name="settings_not_connected">غير متصل</string>
+    <string name="settings_connected">متصل</string>
+    <string name="settings_network_name">اسم الشبكة</string>
+    <string name="settings_signal">قوة الإشارة</string>
+    <string name="settings_ip">عنوان IP</string>
+    <string name="settings_router">الراوتر</string>
+    <string name="settings_dns">DNS</string>
+    <string name="settings_configure_wifi">إعداد الواي فاي</string>
+    <string name="settings_signal_excellent">ممتازة</string>
+    <string name="settings_signal_good">جيدة</string>
+    <string name="settings_signal_fair">متوسطة</string>
+    <string name="settings_signal_weak">ضعيفة</string>
+
+    <!-- Home Screen -->
+    <string name="settings_top_shelf_autoplay">التشغيل التلقائي في الرف العلوي</string>
+    <string name="settings_top_shelf_region">منطقة الرف العلوي</string>
+    <string name="settings_reset_layout">إعادة ضبط ترتيب الشاشة الرئيسية</string>
+    <string name="settings_default_home">تطبيق الشاشة الرئيسية الافتراضي</string>
+    <string name="settings_header_top_shelf">الرف العلوي</string>
+    <string name="settings_header_layout">الترتيب</string>
+    <string name="settings_autoplay_footer">تشغيل الإعلانات التشويقية في الرف العلوي عند التركيز على تطبيق.</string>
+    <string name="settings_region_footer">الدولة المستخدمة لاختيار الأفلام والمسلسلات التي تظهر في الرف العلوي.</string>
+    <string name="settings_reset_footer">يعيد كل تطبيق إلى مكانه الأصلي.</string>
+    <string name="settings_default_home_footer">لإرجاع شاشة أندرويد الرئيسية الأصلية، شغّل:\nadb shell pm enable com.google.android.apps.tv.launcherx\nثم اخترها كتطبيق الشاشة الرئيسية الافتراضي.</string>
+    <string name="settings_reset_title">إعادة ضبط ترتيب الشاشة الرئيسية؟</string>
+    <string name="settings_reset_message">ستعود تطبيقاتك إلى ترتيبها الأصلي. التطبيقات المخفية تبقى مخفية.</string>
+    <string name="settings_reset_confirm">إعادة ضبط</string>
+    <string name="settings_cancel">إلغاء</string>
+
+    <!-- System -->
+    <string name="settings_software_update">تحديث النظام</string>
+    <string name="settings_accessibility">سهولة الاستخدام</string>
+    <string name="settings_developer">خيارات المطوّر</string>
+    <string name="settings_restart">إعادة التشغيل</string>
+    <string name="settings_android_settings">إعدادات أندرويد</string>
+    <string name="settings_header_maintenance">الصيانة</string>
+    <string name="settings_accessibility_footer">فعّل «Apple TV Controls» هنا لتشغيل مركز التحكم ومبدّل التطبيقات.</string>
+    <string name="settings_accessibility_on_footer">«Apple TV Controls» مفعّلة: مركز التحكم ومبدّل التطبيقات متاحان.</string>
+    <string name="settings_android_settings_footer">كل الإعدادات الأخرى التي يوفرها الجهاز.</string>
+
+    <string name="settings_cant_open">هذا الإعداد غير متاح على هذا الجهاز.</string>
+</resources>

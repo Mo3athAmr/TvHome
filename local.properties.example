@@ -1,0 +1,14 @@
+# Copy to local.properties (git-ignored) and fill in. Never commit the real file.
+sdk.dir=/path/to/Android/sdk
+
+# Required: free TMDB "API Read Access Token" — https://www.themoviedb.org/settings/api
+TMDB_READ_TOKEN=
+
+# Rafiq assistant — at least one of these. Order of use: Anthropic → Experiential Labs → Gemini.
+ANTHROPIC_API_KEY=
+ANTHROPIC_WORKSPACE_ID=
+EXPLABS_API_KEY=
+GEMINI_API_KEY=
+
+# Optional: Instagram account whose follower count the prayer screensaver shows (blank = hidden)
+INSTAGRAM_HANDLE=

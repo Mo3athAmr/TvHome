@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دليل TvHome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --surface-2:#eef0f4; --text:#14161a; --muted:#5d6470;
+  --line:#e1e4ea; --accent:#2f6fec; --accent-soft:#e6eefe; --ok:#1d8a4e; --warn:#b26b00; --code:#0f1115; --code-text:#e8eaee;
+  --radius:16px; --shadow:0 1px 2px rgba(16,24,40,.06),0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d0f13; --surface:#161920; --surface-2:#1d212a; --text:#eceef2; --muted:#9aa3b2;
+    --line:#2a2f3a; --accent:#6d9bff; --accent-soft:#1b2640; --ok:#4cc38a; --warn:#f0b450; --code:#0a0c10; --code-text:#e8eaee;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d0f13; --surface:#161920; --surface-2:#1d212a; --text:#eceef2; --muted:#9aa3b2;
+  --line:#2a2f3a; --accent:#6d9bff; --accent-soft:#1b2640; --ok:#4cc38a; --warn:#f0b450; --code:#0a0c10; --code-text:#e8eaee;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.75 "IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:16px;height:56px;overflow-x:auto;white-space:nowrap}
+header.top b{font-weight:700} header.top nav{display:flex;gap:14px;font-size:14px}
+header.top nav a{color:var(--muted)} header.top nav a:hover{color:var(--text)}
+.hero{padding:48px 0 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.25;margin:0 0 10px}
+.hero p{color:var(--muted);font-size:18px;max-width:760px;margin:0 0 20px}
+.hero img{width:100%;border-radius:var(--radius);box-shadow:var(--shadow);display:block}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.pill{background:var(--accent-soft);color:var(--accent);padding:4px 12px;border-radius:999px;font-size:14px;font-weight:500}
+section{padding:36px 0;border-top:1px solid var(--line)}
+section h2{font-size:26px;margin:0 0 6px} section .lead{color:var(--muted);margin:0 0 22px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card .body{padding:16px 18px}
+.card h3{margin:0 0 6px;font-size:18px} .card p{margin:0;color:var(--muted);font-size:15px}
+.shot{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;cursor:zoom-in;background:var(--surface-2)}
+figure{margin:0} figcaption{padding:10px 14px;font-size:14px;color:var(--muted)}
+.steps{counter-reset:s;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.grid>*,.say>*{min-width:0} pre{max-width:100%}
+.step{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 18px 18px;padding-inline-start:64px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;inset-inline-start:18px;top:18px;width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.step h3{margin:0 0 6px;font-size:18px} .step p{margin:0 0 8px;color:var(--muted)}
+pre{direction:ltr;text-align:left;background:var(--code);color:var(--code-text);border-radius:12px;padding:14px 16px;overflow-x:auto;font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:8px 0 0;position:relative}
+pre button{position:absolute;top:8px;right:8px;background:#2a2f3a;color:#e8eaee;border:0;border-radius:8px;padding:4px 10px;font:12px "IBM Plex Sans Arabic",sans-serif;cursor:pointer}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em;background:var(--surface-2);padding:1px 6px;border-radius:6px;direction:ltr;unicode-bidi:embed}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:15px}
+th,td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
+th{background:var(--surface-2);font-weight:600} tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto;border-radius:var(--radius)}
+.say{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.say div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.say q{display:block;font-weight:600;quotes:"«" "»"} .say span{color:var(--muted);font-size:14px}
+.note{background:var(--accent-soft);border-radius:12px;padding:12px 16px;margin-top:14px}
+.warn{border-inline-start:4px solid var(--warn);background:var(--surface);border-radius:12px;padding:12px 16px;margin-top:14px}
+footer{padding:36px 0 48px;color:var(--muted);text-align:center;font-size:12px;border-top:1px solid var(--line)}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:20;padding:16px;cursor:zoom-out}
+#lb img{max-width:100%;max-height:100%;border-radius:12px}
+.theme{margin-inline-start:auto;background:var(--surface);border:1px solid var(--line);color:var(--text);border-radius:999px;padding:4px 12px;font:13px "IBM Plex Sans Arabic",sans-serif;cursor:pointer}
+@media (max-width:600px){.step{padding-inline-start:18px;padding-top:60px}.step::before{top:16px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <b>TvHome</b>
+  <nav>
+    <a href="#features">المزايا</a><a href="#rafiq">رفيق</a><a href="#prayer">الصلاة</a><a href="#sports">المباريات</a>
+    <a href="#settings">الإعدادات</a><a href="#install">التثبيت</a><a href="#remote">الريموت</a><a href="#help">حل المشاكل</a>
+  </nav>
+  <button class="theme" id="theme" type="button">الوضع</button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="pills"><span class="pill">Android TV / Google TV</span><span class="pill">عربي بالكامل</span><span class="pill">مساعد ذكي</span><span class="pill">خفيف على الشاشة</span></div>
+    <h1>TvHome — واجهة ذكية عربية لشاشتك</h1>
+    <p>يستبدل الواجهة الرئيسية لشاشة Android TV بنظام متكامل: محتوى يتجدد، ومساعد صوتي اسمه «رفيق» يتحكم بالشاشة فعلاً، ومواقيت الصلاة مع الأذان والقفل، ووضع الجمعة، والمباريات المباشرة، وشاشة توقف بمواقيت الصلاة.</p>
+    <img class="shot" src="screenshots/home.jpg" alt="الشاشة الرئيسية: جديد يوتيوب والمباريات وأحدث الأفلام">
+  </div>
+
+  <section id="features">
+    <h2>المزايا</h2>
+    <p class="lead">كل صفحة في النظام، بلقطات من شاشة حقيقية. اضغط على أي صورة لتكبيرها.</p>
+    <div class="grid">
+      <div class="card"><figure><img class="shot" src="screenshots/home.jpg" alt="الشاشة الرئيسية"><figcaption>الشاشة الرئيسية</figcaption></figure>
+        <div class="body"><h3>الشاشة الرئيسية</h3><p>قسم كبير بأحدث مقاطع قنواتك، وصفوف جديد يوتيوب والمباريات وتطبيقاتك.</p></div></div>
+      <div class="card"><figure><img class="shot" src="screenshots/home-latest.jpg" alt="أحدث الأفلام والمسلسلات"><figcaption>أحدث الأفلام والمسلسلات</figcaption></figure>
+        <div class="body"><h3>أحدث الأفلام والمسلسلات</h3><p>تتجدد كل ١٥ دقيقة وعند الرجوع للرئيسية، وتظهر حلقات اليوم والأنمي أولاً مع «الموسم · الحلقة · اليوم».</p></div></div>
+      <div class="card"><figure><img class="shot" src="screenshots/prayer-dashboard.jpg" alt="شاشة التوقف بمواقيت الصلاة"><figcaption>شاشة التوقف</figcaption></figure>
+        <div class="body"><h3>شاشة التوقف</h3><p>الساعة والتاريخ الهجري والطقس ومباريات اليوم ومواقيت الصلاة، مع إبراز الصلاة القادمة.</p></div></div>
+      <div class="card"><figure><img class="shot" src="screenshots/stremio-autopick.jpg" alt="ستريميو"><figcaption>التشغيل في ستريميو</figcaption></figure>
+        <div class="body"><h3>التشغيل في ستريميو</h3><p>قل اسم أي عمل، ويفتح رفيق الحلقة أو الفيلم ويختار بث 1080p سليم ويبدأ التشغيل.</p></div></div>
+    </div>
+  </section>
+
+  <section id="rafiq">
+    <h2>المساعد «رفيق»</h2>
+    <p class="lead">اضغط زر المساعد أو المايك في الريموت وتكلم. جوجل يسمع وواجهته مخفية، ورفيق يرد باللهجة السعودية كتابة وصوتاً، ولا يذكر أي تفاصيل تقنية.</p>
+    <div class="grid">
+      <div class="card"><figure><img class="shot" src="screenshots/rafiq-listening.jpg" alt="رفيق يسمع"><figcaption>أثناء الاستماع: شاشة معتمة و«أسمعك…»</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/rafiq-answer.jpg" alt="رفيق يرد"><figcaption>كلامك في الأعلى، ثم الرد مكتوباً ومسموعاً</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/picks-family.jpg" alt="اقتراحات عائلية"><figcaption>«اقترح لي فيلم عائلي ما فيه لقطات»</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/picks-korean.jpg" alt="مسلسلات رعب كورية"><figcaption>«مسلسل رعب كوري جديد»</figcaption></figure></div>
+    </div>
+    <h3 style="margin:26px 0 10px">جرّب تقول</h3>
+    <div class="say">
+      <div><q>اقترح لي شي</q><span>يسألك سؤالاً واحداً: فيلم ولا مسلسل ولا أنمي؟ وأي جو؟ جديد ولا قديم؟</span></div>
+      <div><q>أنمي أكشن جديد</q><span>يعرض النتائج بوسترات، ثم «افتح الثاني» يفتح صفحته</span></div>
+      <div><q>شي يشبه Breaking Bad</q><span>أعمال مشابهة من المكتبة</span></div>
+      <div><q>شغّل آخر حلقة من ون بيس في ستريميو</q><span>أي عمل، وأي موسم أو حلقة</span></div>
+      <div><q>افتح آخر حلقة أنا أقطع لمحمد عدنان</q><span>أحدث حلقة نزلت من البرنامج في يوتيوب</span></div>
+      <div><q>شغّل الجزيرة مباشر</q><span>القنوات المباشرة في يوتيوب</span></div>
+      <div><q>شغّل سورة الكهف بصوت العفاسي</q><span>مشغّل القرآن بملء الشاشة</span></div>
+      <div><q>شغّل مباراة برشلونة</q><span>يفتح كاسبر فليكس على قناة المباراة</span></div>
+      <div><q>وش اللي على الشاشة؟</q><span>يشوف الشاشة ويجاوب</span></div>
+      <div><q>علّي الصوت · وقّف · كم الساعة</q><span>أوامر فورية بدون ذكاء اصطناعي (أقل من ثانية)</span></div>
+    </div>
+    <p class="note">الفلتر يشتغل دائماً: لا يقترح رفيق محتوى فاضحاً أبداً. «عائلي» يعطيك أعمالاً تناسب الأطفال، و«بدون لقطات» يستبعد اللقطات الجنسية.</p>
+  </section>
+
+  <section id="prayer">
+    <h2>الصلاة والجمعة</h2>
+    <p class="lead">مواقيت أم القرى، وصوت الأذان، وقفل الشاشة من الأذان حتى الإقامة، ووضع الجمعة مع سورة الكهف.</p>
+    <div class="grid">
+      <div class="card"><figure><img class="shot" src="screenshots/prayer-lock.jpg" alt="قفل الصلاة"><figcaption>قفل الشاشة وقت الصلاة مع العد التنازلي للإقامة</figcaption></figure>
+        <div class="body"><p>للخروج الطارئ: اضغط مطوّلاً على زر الرجوع ٥ ثوانٍ (يظهر الشريط بعد ثانيتين).</p></div></div>
+      <div class="card"><figure><img class="shot" src="screenshots/settings-prayer.jpg" alt="إعدادات الأذان"><figcaption>الأذان والقفل والإقامة</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/settings-jumuah.jpg" alt="إعدادات الجمعة"><figcaption>صلاة الجمعة وسورة الكهف (العفاسي، المعيقلي، السديس)</figcaption></figure></div>
+    </div>
+  </section>
+
+  <section id="sports">
+    <h2>المباريات</h2>
+    <p class="lead">مواعيد ونتائج مباشرة لأنديتك وبطولاتك، تتحدث كل ١٥ ثانية أثناء اللعب، مع تذكير قبل المباراة وزر «شاهد في كاسبر فليكس».</p>
+    <div class="grid">
+      <div class="card"><figure><img class="shot" src="screenshots/home.jpg" alt="صف المباريات"><figcaption>صف المباريات في الرئيسية</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/settings-clubs.jpg" alt="الأندية المتابعة"><figcaption>اختيار الأندية المتابعة وأولويتها</figcaption></figure></div>
+    </div>
+  </section>
+
+  <section id="settings">
+    <h2>الإعدادات</h2>
+    <p class="lead">كل شيء يُضبط من الريموت: الشاشة الرئيسية، شاشة التوقف، الأذان، الجمعة، الإشعارات، المساعد وفحص الميزات.</p>
+    <div class="grid">
+      <div class="card"><figure><img class="shot" src="screenshots/settings-customize.jpg" alt="تخصيص"><figcaption>تخصيص</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/settings-assistant.jpg" alt="المساعد الذكي"><figcaption>المساعد الذكي: المزوّد، زر الريموت، الرد بالصوت</figcaption></figure></div>
+      <div class="card"><figure><img class="shot" src="screenshots/settings-saver.jpg" alt="وضع شاشة التوقف"><figcaption>وضع شاشة التوقف</figcaption></figure></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>التثبيت</h2>
+    <p class="lead">أسهل طريقة: افتح المجلد في وكيل برمجة ذكي (Claude Code أو Cursor أو Codex) وقل له <b>«اتبع install.md»</b>. هو يسألك وش تحتاج ويسوي كل الخطوات معك. أو اتبع الخطوات التالية:</p>
+    <div class="steps">
+      <div class="step"><h3>جهّز الكمبيوتر</h3><p>ثبّت JDK 21 و Android SDK (المنصة 36) و adb. وجهّز رمز TMDB المجاني ومفتاح مساعد واحد على الأقل (Anthropic أو Experiential Labs أو Gemini).</p>
+<pre><code>cp local.properties.example local.properties
+# عبّي: sdk.dir و TMDB_READ_TOKEN و ANTHROPIC_API_KEY (أو غيره)</code></pre></div>
+      <div class="step"><h3>فعّل وضع المطوّر في الشاشة</h3><p>الإعدادات ← النظام ← حول ← اضغط «Build» سبع مرات. ثم خيارات المطوّر ← فعّل «تصحيح USB» (و«التصحيح عبر الشبكة» إن وُجد). وخذ عنوان IP الشاشة من إعدادات الشبكة.</p></div>
+      <div class="step"><h3>ابنِ التطبيق</h3><p>نسخة release دائماً لأنها الأسرع على الشاشة.</p>
+<pre><code>./gradlew :app:testReleaseUnitTest :app:assembleRelease
+# إذا الكمبيوتر مشغول:
+nice -n 19 ./gradlew --no-daemon --max-workers=1 :app:assembleRelease</code></pre></div>
+      <div class="step"><h3>ثبّته على الشاشة</h3><p>وافق على رسالة «السماح بالتصحيح» في الشاشة واختر «السماح دائماً».</p>
+<pre><code>adb connect 192.168.1.50:5555
+adb install -r app/build/outputs/apk/release/app-release.apk
+TV=192.168.1.50:5555 ./scripts/after-install.sh</code></pre></div>
+      <div class="step"><h3>اجعله الواجهة الرئيسية</h3><p>يعطّل الواجهة الأصلية تعطيلاً قابلاً للإرجاع، ويضبط شاشة التوقف.</p>
+<pre><code>TV=192.168.1.50:5555 ./scripts/set-home.sh</code></pre></div>
+      <div class="step"><h3>إضافات اختيارية</h3><p>قنوات يوتيوب لصف «جديد يوتيوب» (معرّف قناة أو @معرّف في كل سطر، أو ملف subscriptions.csv)، وضبط الساعة بعد انقطاع الكهرباء.</p>
+<pre><code>adb push youtube_channels.txt /sdcard/Android/data/com.moath.tvhome/files/
+adb shell settings put global ntp_server 162.159.200.123</code></pre></div>
+      <div class="step"><h3>خصّص من الريموت</h3><p>من الإعدادات ← تخصيص: الأذان والقفل، الجمعة وسورة الكهف، الأندية والبطولات، المساعد، وشاشة التوقف.</p></div>
+    </div>
+    <p class="warn">لا يُعطَّل أي تطبيق في الشاشة بدون موافقتك، وبأمر <code>pm disable-user</code> فقط (قابل للإرجاع)، وكل تطبيق معطّل يُسجّل في <code>scripts/disabled-packages.txt</code>. للرجوع لكل شيء:</p>
+<pre><code>TV=192.168.1.50:5555 ./scripts/restore.sh            # أضف --uninstall لحذف TvHome</code></pre>
+  </section>
+
+  <section id="remote">
+    <h2>الريموت</h2>
+    <div class="tablewrap"><table>
+      <tr><th>الزر</th><th>الوظيفة</th></tr>
+      <tr><td>المساعد / المايك</td><td>رفيق يسمع (عبر جوجل) ويرد</td></tr>
+      <tr><td>Home (ضغط مطوّل)</td><td>مركز التحكم: الساعة، النوم، شاشة التوقف، الشبكة، البلوتوث، الصوت</td></tr>
+      <tr><td>Home (ضغطتين)</td><td>مبدّل التطبيقات</td></tr>
+      <tr><td>رجوع (٥ ثوانٍ) في قفل الصلاة</td><td>خروج طارئ</td></tr>
+      <tr><td>OK على شاشة التوقف</td><td>إغلاقها</td></tr>
+    </table></div>
+  </section>
+
+  <section id="help">
+    <h2>حل المشاكل</h2>
+    <div class="tablewrap"><table>
+      <tr><th>المشكلة</th><th>الحل</th></tr>
+      <tr><td>مركز التحكم أو رفيق ما يستجيب بعد التحديث</td><td>شغّل <code>scripts/after-install.sh</code> مرة ثانية (شاشات TCL تحتاج السماح بالتشغيل التلقائي).</td></tr>
+      <tr><td><code>No route to host</code> والشاشة شغالة</td><td><code>adb kill-server && adb start-server && adb connect &lt;ip&gt;:5555</code></td></tr>
+      <tr><td>رفيق يقول يحتاج مفتاح</td><td>أضف المفتاح في <code>local.properties</code> وأعد البناء.</td></tr>
+      <tr><td>ستريميو يعلق على شعار التحميل</td><td>يحدث عند التشغيل الأول؛ النظام يعيد فتح الحلقة تلقائياً بعد ١٤ ثانية. تأكد أن إضافاتك مثبّتة في ستريميو.</td></tr>
+      <tr><td>بطاقة الصلاة مخفية</td><td>الساعة غير مضبوطة — اضبط NTP كما في الخطوات.</td></tr>
+    </table></div>
+  </section>
+</main>
+
+<footer>
+  غير مرتبط بـ Apple أو Google أو YouTube أو Stremio أو TMDB؛ أسماؤها علامات تجارية لأصحابها.<br>
+  صُنع بواسطة معاذ الحكيم ♥️
+</footer>
+
+<div id="lb" role="dialog" aria-label="صورة مكبّرة"><img alt=""></div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), big=lb.querySelector('img');
+  document.querySelectorAll('img.shot').forEach(function(im){
+    im.addEventListener('click',function(){big.src=im.src;big.alt=im.alt;lb.style.display='flex';});
+  });
+  lb.addEventListener('click',function(){lb.style.display='none';});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.style.display='none';});
+  document.querySelectorAll('pre').forEach(function(pre){
+    var b=document.createElement('button');b.type='button';b.textContent='نسخ';
+    b.addEventListener('click',function(){
+      var t=pre.querySelector('code').innerText;
+      (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='تم ✓';setTimeout(function(){b.textContent='نسخ'},1500)}).catch(function(){});
+    });
+    pre.appendChild(b);
+  });
+  var root=document.documentElement, btn=document.getElementById('theme'), key='tvhome-guide-theme';
+  try{var saved=localStorage.getItem(key); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){
+    var dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    var next=dark?'light':'dark'; root.setAttribute('data-theme',next);
+    try{localStorage.setItem(key,next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

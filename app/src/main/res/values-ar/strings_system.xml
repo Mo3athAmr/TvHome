@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Control Center -->
+    <string name="sys_cc_sleep">إسبات</string>
+    <string name="sys_cc_screensaver">شاشة التوقف</string>
+    <string name="sys_cc_wifi">الواي فاي</string>
+    <string name="sys_cc_wifi_off">غير متصل</string>
+    <string name="sys_cc_wifi_connected">متصل</string>
+    <string name="sys_cc_ethernet">إيثرنت</string>
+    <string name="sys_cc_network">الشبكة</string>
+    <string name="sys_cc_bluetooth">البلوتوث</string>
+    <string name="sys_cc_search">بحث</string>
+    <string name="sys_cc_settings">الإعدادات</string>
+    <string name="sys_cc_volume">مستوى الصوت</string>
+    <!-- App Switcher -->
+    <string name="sys_switcher_home">الرئيسية</string>
+</resources>
