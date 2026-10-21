@@ -196,6 +196,7 @@ figure{margin:0}
 .strip figure{flex:0 0 min(84%,760px);scroll-snap-align:start;transition:opacity .3s,transform .3s var(--ease)}
 .strip.swap figure{opacity:0;transform:translateY(8px)}
 .strip-nav{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+.strip-nav .ibtn:disabled{opacity:.3;cursor:default;pointer-events:none}
 
 /* commands list */
 .saylist{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-top:28px}
@@ -614,12 +615,25 @@ var MODES={
 };
 var strip=$("#strip"),seg=$("#seg"),knob=$(".knob",seg);
 function place(b){knob.style.width=b.offsetWidth+"px";knob.style.right=(seg.getBoundingClientRect().right-b.getBoundingClientRect().right)+"px"}
-function fill(m,anim){var html=MODES[m].map(function(x){return'<figure class="shot spot"><img loading="lazy" decoding="async" src="screenshots/'+x[0]+'" alt="'+x[1]+'"><figcaption>'+x[1]+"</figcaption></figure>"}).join("");
-  if(!anim||reduce){strip.innerHTML=html;return}strip.classList.add("swap");setTimeout(function(){strip.innerHTML=html;strip.scrollTo({left:0});requestAnimationFrame(function(){requestAnimationFrame(function(){strip.classList.remove("swap")})})},180)}
+function fill(m,anim){var html=MODES[m].map(function(x){return'<figure class="shot spot"><img decoding="async" src="screenshots/'+x[0]+'" alt="'+x[1]+'"><figcaption>'+x[1]+"</figcaption></figure>"}).join("");
+  function put(){strip.innerHTML=html;sIdx=0;strip.scrollTo({left:0});navState()}
+  if(!anim||reduce){put();return}strip.classList.add("swap");setTimeout(function(){put();requestAnimationFrame(function(){requestAnimationFrame(function(){strip.classList.remove("swap")})})},180)}
 $$("button",seg).forEach(function(b){b.addEventListener("click",function(){$$("button",seg).forEach(function(x){x.classList.toggle("on",x===b)});place(b);fill(b.dataset.m,true)})});
 fill("yt",false);requestAnimationFrame(function(){place($("button.on",seg))});addEventListener("resize",function(){place($("button.on",seg))});
-function stripStep(d){var f=$("figure",strip);if(f)strip.scrollBy({left:d*(f.offsetWidth+14),behavior:"smooth"})}
-$("#sNext").addEventListener("click",function(){stripStep(-1)});$("#sPrev").addEventListener("click",function(){stripStep(1)});
+/* one picture per press, never past the first or the last one */
+var sIdx=0,sNext=$("#sNext"),sPrev=$("#sPrev");
+function figs(){return $$("figure",strip)}
+function maxScroll(){return strip.scrollWidth-strip.clientWidth}
+function navState(){if(!sPrev)return;var n=figs().length,atEnd=Math.abs(strip.scrollLeft)>=maxScroll()-4;
+  sPrev.disabled=sIdx<=0;sNext.disabled=sIdx>=n-1||atEnd}
+function goFig(i){var f=figs();if(!f.length)return;sIdx=Math.max(0,Math.min(f.length-1,i));
+  var fr=f[sIdx].getBoundingClientRect(),sr=strip.getBoundingClientRect();
+  strip.scrollBy({left:fr.right-sr.right,behavior:reduce?"auto":"smooth"});setTimeout(navState,450)}
+sNext.addEventListener("click",function(){goFig(sIdx+1)});sPrev.addEventListener("click",function(){goFig(sIdx-1)});
+var sT;strip.addEventListener("scroll",function(){clearTimeout(sT);sT=setTimeout(function(){
+  var sr=strip.getBoundingClientRect(),best=0,bd=1e9;figs().forEach(function(f,i){var d=Math.abs(f.getBoundingClientRect().right-sr.right);if(d<bd){bd=d;best=i}});
+  sIdx=best;navState()},90)},{passive:true});
+addEventListener("resize",navState);navState();
 
 /* ── TV simulator ── */
 var hero="yt";
